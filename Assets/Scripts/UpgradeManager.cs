@@ -34,6 +34,9 @@ public class UpgradeManager : MonoBehaviour
                 case "gravityWell":
                     player.gravityPower += amount;
                     break;
+                case "xHoming":
+                    player.xHoming += amount;
+                    break;
             }
         }
     }

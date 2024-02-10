@@ -7,12 +7,15 @@ public class Player : MonoBehaviour
     [Header("References")]
     public Rigidbody2D rb;
     public GameObject groundCollider;
+    public Transform rock;
 
     [Header("Movement")]
     public float moveSpeed = 5f;
     public float jumpHeight = 5f;
     public float jumps = 1f;
     private float jumpsLeft = 1f;
+    public float xHoming = 0f;
+    public float xHomingRange = 3f;
 
     [Header("Other Values")]
     public float xReboundForce = 0.7f;
@@ -111,6 +114,10 @@ public class Player : MonoBehaviour
         float x = Input.GetAxis("Horizontal");
         rb.velocity = new Vector2(x * moveSpeed, rb.velocity.y);
         rb.angularVelocity += rotationalMovementForce * rb.velocity.x * -Time.deltaTime;
+        if(rock != null && Mathf.Abs(transform.position.x - rock.position.x) < xHomingRange && xHoming > 0f && !grounded && !rebounding){
+            rb.velocity = new Vector2(x * moveSpeed * 1.25f + (rock.position.x - transform.position.x) * xHoming, rb.velocity.y);
+        }
+        //if distance to rock is less than xHomingRange, move towards rock
         //cap angular velocity
         if(rb.angularVelocity > rotationalMovementCap){
             rb.angularVelocity = rotationalMovementCap;

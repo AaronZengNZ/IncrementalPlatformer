@@ -7,6 +7,7 @@ TagManager:
   - Ground
   - Rock
   - Upgrade
+  - RedPad
   layers:
   - Default
   - TransparentFX
@@ -14,7 +15,7 @@ TagManager:
   - Ground
   - Water
   - UI
-  - 
+  - Particles
   - 
   - 
   - 

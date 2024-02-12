@@ -8,10 +8,19 @@ public class ScoreCounter : MonoBehaviour
 {
     public float score {get; private set;}
     public float scoreLerpSpeed = 10f;
+    public float shards {get; private set;}
     private float scoreLerp = 0f;
     public TextMeshProUGUI scoreText;
+    public TextMeshProUGUI shardText;
+    public bool shardsUnlocked = false;
 
     void Update(){
+        if(shardsUnlocked){
+            shardText.text = "Shards: " + Mathf.RoundToInt(shards).ToString();
+        }
+        else{
+            shardText.text = "";
+        }
         scoreLerp += (score - scoreLerp) * Time.deltaTime * scoreLerpSpeed;
         string indent;
         if(Mathf.Round(scoreLerp) > Mathf.Round(score)){indent = "-";}
@@ -29,5 +38,11 @@ public class ScoreCounter : MonoBehaviour
     
     public void UpdateScore(float amount){
         score += amount;
+    }
+
+    public void UpdateShards(float amount){
+        if(shardsUnlocked){
+            shards += amount;
+        }
     }
 }

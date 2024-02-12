@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using TMPro;
 
 public class Player : MonoBehaviour
 {
@@ -8,6 +9,8 @@ public class Player : MonoBehaviour
     public Rigidbody2D rb;
     public GameObject groundCollider;
     public Transform rock;
+    public TextMeshProUGUI autoJumpsLeftText;
+    public ParticleSystem redBoostEffect;
 
     [Header("Movement")]
     public float moveSpeed = 5f;
@@ -17,14 +20,21 @@ public class Player : MonoBehaviour
     public float xHoming = 0f;
     public float xHomingRange = 3f;
 
-    [Header("Other Values")]
+    [Header("Rebound Values")]
     public float xReboundForce = 0.7f;
     public float yReboundMultiplier = 0.6f;
     public float rotationalReboundForce = 10f;
     public float rotationalMovementForce = 10f;
     public float rotationalMovementCap = 100f;
+    [Header("Other Values")]
     public float smashPower = 1f;
     public float gravityPower = 1f;
+    public float maxAutoJumps = 0f;
+    public float autoJumpRegenSpeed = 5f;
+    public float autoJumpsLeft = 0f;
+    public bool autoJumpsToggled = false;
+    public float redBoostTimeLeft = 0f;
+    private float redBoostValue = 5f;
 
     private bool grounded = false;
     private bool rebounding = false;
@@ -37,6 +47,7 @@ public class Player : MonoBehaviour
     {
         rebounding = false;
         colliding = false;
+        StartCoroutine(regenAutoJumps());
     }
 
     void Update()
@@ -45,13 +56,50 @@ public class Player : MonoBehaviour
         Movement();
         Jumping();
         AccelerateDown();
+        autoJumpCalculations();
+        boostCalculations();
         previousVelocity = rb.velocity;
         previousYMagnitude = Mathf.Abs(rb.velocity.y);
+    }
+
+    private void boostCalculations(){
+        if(redBoostTimeLeft > 0f){
+            redBoostTimeLeft -= Time.deltaTime;
+            redBoostEffect.enableEmission = true;
+        }
+        else{
+            redBoostTimeLeft = 0f;
+            redBoostEffect.enableEmission = false;
+        }
+    }
+
+    private void autoJumpCalculations(){
+        autoJumpsLeftText.text = autoJumpsLeft + "/" + maxAutoJumps;
+        if(Input.GetKeyDown("z") && autoJumpsLeft > 0){
+            autoJumpsToggled = !autoJumpsToggled;
+        }
+        if(autoJumpsLeft <= 0f){
+            autoJumpsToggled = false;
+        }
+    }
+
+    IEnumerator regenAutoJumps(){
+        while(true){
+            if(autoJumpsLeft < maxAutoJumps && !autoJumpsToggled){
+                autoJumpsLeft += 1f;            
+            }
+            yield return new WaitForSeconds(1f / autoJumpRegenSpeed);
+        }
     }
 
     private void OnCollisionExit2D(Collision2D other) {
         if(other.gameObject.tag == "Rock"){
             colliding = false;
+        }
+        if(other.gameObject.tag == "Ground"){
+            if(autoJumpsToggled){
+                autoJumpsLeft -= 1f;
+            }
         }
     }
 
@@ -71,8 +119,11 @@ public class Player : MonoBehaviour
             if(previousVelocity.y > 0){
                 rb.velocity = new Vector2(rb.velocity.x, -previousVelocity.y);
                 other.GetComponent<Buyable>().TryUpgrade();
+                rock.GetComponent<Rock>().Shake(-1.5f);
             }
-            //buy upgrade
+        }
+        if(other.gameObject.tag == "RedPad"){
+            redBoostTimeLeft = 5f;
         }
     }
 
@@ -83,7 +134,11 @@ public class Player : MonoBehaviour
 
     private void CallCollision(GameObject other){
         if(colliding){return;}
-        other.GetComponent<Rock>().Collision(this.gameObject, previousYMagnitude, smashPower);
+        float boostTotal = 1f;
+        if(redBoostTimeLeft > 0f){
+            boostTotal *= redBoostValue;
+        }
+        other.GetComponent<Rock>().Collision(this.gameObject, previousYMagnitude, smashPower, boostTotal);
     }
 
     private void CollisionRebound(Transform other){
@@ -116,6 +171,7 @@ public class Player : MonoBehaviour
         rb.angularVelocity += rotationalMovementForce * rb.velocity.x * -Time.deltaTime;
         if(rock != null && Mathf.Abs(transform.position.x - rock.position.x) < xHomingRange && xHoming > 0f && !grounded && !rebounding){
             rb.velocity = new Vector2(x * moveSpeed * 1.25f + (rock.position.x - transform.position.x) * xHoming, rb.velocity.y);
+            rb.angularVelocity += rotationalMovementForce * rb.velocity.x * -Time.deltaTime;
         }
         //if distance to rock is less than xHomingRange, move towards rock
         //cap angular velocity
@@ -135,6 +191,10 @@ public class Player : MonoBehaviour
             RegisterJump();
             rebounding = false;
         }
+        else if(autoJumpsToggled && autoJumpsLeft > 0f && grounded == true){
+            RegisterJump();
+            rebounding = false;
+        }
     }
 
     private void RegisterJump(){
@@ -143,7 +203,7 @@ public class Player : MonoBehaviour
     }
 
     private void AccelerateDown(){
-        if(rb.velocity.y < 0 || !Input.GetButton("Jump") || rebounding){
+        if(rb.velocity.y < 0 || !Input.GetButton("Jump") && !autoJumpsToggled || rebounding){
             rb.velocity += Vector2.up * Physics2D.gravity.y * (2.5f*gravityPower) * Time.deltaTime;
         }
     }

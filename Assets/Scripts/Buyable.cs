@@ -13,17 +13,18 @@ public class Buyable : MonoBehaviour
     public GameObject experienceParticle;
     [Header("Values")]
     public float[] costs;
+    public string currency = "pebbles";
     public int levels = 3;
     public int level = 1;
     public float[] amounts;
     public string upgradeType = "doubleJumps";
-    public string upgradeVariety = "player";
     public string effectStringPrefix;
     public string[] effectStringSuffixes;
     public float xDistanceForDescription = 3f;
     [Header("MISC")]
     public float experienceParticlesSpawned = 10f;
     public Color experienceParticleColor;
+    public bool infiniteBuyable = false;
     private bool showDescription = false;
     private bool buyCooldown = false;
 
@@ -47,19 +48,15 @@ public class Buyable : MonoBehaviour
         }
     }
     public void TryUpgrade(){
-        if(level > levels){return;}
+        if(level > levels && !infiniteBuyable){return;}
         if(buyCooldown){return;}
-        if(upgradeManager.checkPrice(costs[level-1])){
-            if(upgradeVariety == "player"){
-                upgradeManager.UpgradePlayerStat(upgradeType, amounts[level-1], costs[level-1]);
-            }
-            else if(upgradeVariety == "rock"){
-                upgradeManager.UpgradeRockStat(upgradeType, amounts[level-1], costs[level-1]);
-            }
-            level++;
-            buyCooldown = true;
+        if(upgradeManager.checkPrice((costs[level-1]), currency)){
+            upgradeManager.UpgradeStat(upgradeType, amounts[level-1], costs[level-1], currency);
             SpawnParticles();
+            buyCooldown = true;
             StartCoroutine(Cooldown());
+            if(infiniteBuyable && level > levels){return;}
+            level++;
         }
     }
 

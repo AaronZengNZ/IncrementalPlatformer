@@ -35,6 +35,7 @@ public class Player : MonoBehaviour
     public bool autoJumpsToggled = false;
     public float redBoostTimeLeft = 0f;
     private float redBoostValue = 5f;
+    private bool gravityTripled = false;
 
     private bool grounded = false;
     private bool rebounding = false;
@@ -48,8 +49,52 @@ public class Player : MonoBehaviour
         rebounding = false;
         colliding = false;
         StartCoroutine(regenAutoJumps());
+        CheckPrefs();
     }
 
+    void CheckPrefs(){
+        if(PlayerPrefs.HasKey("playerJumpHeight")){
+            jumpHeight = PlayerPrefs.GetFloat("playerJumpHeight");
+        }
+        else{
+            PlayerPrefs.SetFloat("playerJumpHeight", jumpHeight);
+        }
+        if(PlayerPrefs.HasKey("playerSmashPower")){
+            smashPower = PlayerPrefs.GetFloat("playerSmashPower");
+            if(smashPower <= 0f){
+                PlayerPrefs.SetFloat("playerSmashPower", 1f);
+                smashPower = 1f;
+            }
+        }
+        else{
+            PlayerPrefs.SetFloat("playerSmashPower", 1f);
+        }
+        if(PlayerPrefs.HasKey("playerGravityPower")){
+            gravityPower = PlayerPrefs.GetFloat("playerGravityPower");
+        }
+        else{
+            PlayerPrefs.SetFloat("playerGravityPower", gravityPower);
+        }
+        if(PlayerPrefs.HasKey("playerXHoming")){
+            xHoming = PlayerPrefs.GetFloat("playerXHoming");
+        }
+        else{
+            PlayerPrefs.SetFloat("playerXHoming", xHoming);
+        }
+        if(PlayerPrefs.HasKey("playerAutoJumps")){
+            maxAutoJumps = PlayerPrefs.GetFloat("playerAutoJumps");
+        }
+        else{
+            PlayerPrefs.SetFloat("playerAutoJumps", maxAutoJumps);
+        }
+    }
+    public void UpdatePrefs(){
+        PlayerPrefs.SetFloat("playerJumpHeight", jumpHeight);
+        PlayerPrefs.SetFloat("playerSmashPower", smashPower);
+        PlayerPrefs.SetFloat("playerGravityPower", gravityPower);
+        PlayerPrefs.SetFloat("playerXHoming", xHoming);
+        PlayerPrefs.SetFloat("playerAutoJumps", maxAutoJumps);
+    }
     void Update()
     {
         GroundCollider();
@@ -124,6 +169,19 @@ public class Player : MonoBehaviour
         }
         if(other.gameObject.tag == "RedPad"){
             redBoostTimeLeft = 5f;
+        }
+        if(other.gameObject.tag == "TripleGravity"){
+            if(!gravityTripled){
+                gravityTripled = true;
+            }
+        }
+    }
+    
+    private void OnTriggerExit2D(Collider2D other) {
+        if(other.gameObject.tag == "TripleGravity"){
+            if(gravityTripled){
+                gravityTripled = false;
+            }
         }
     }
 
@@ -203,7 +261,10 @@ public class Player : MonoBehaviour
     }
 
     private void AccelerateDown(){
-        if(rb.velocity.y < 0 || !Input.GetButton("Jump") && !autoJumpsToggled || rebounding){
+        if(gravityTripled){
+            rb.velocity += Vector2.up * Physics2D.gravity.y * (3f*gravityPower) * Time.deltaTime;
+        }
+        else if(rb.velocity.y < 0 || !Input.GetButton("Jump") && !autoJumpsToggled || rebounding){
             rb.velocity += Vector2.up * Physics2D.gravity.y * (2.5f*gravityPower) * Time.deltaTime;
         }
     }

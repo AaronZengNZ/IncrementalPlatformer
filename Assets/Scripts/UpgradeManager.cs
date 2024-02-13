@@ -1,20 +1,103 @@
+using System.Security.Cryptography;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-
+using UnityEngine.SceneManagement;
+using TMPro;
 public class UpgradeManager : MonoBehaviour
 {
     [Header("References")]
     public Player player;
     public Rock rock;
     public GameObject redPad;
-    private bool redPadActive = false;
+    public bool redPadActive = false;
+    public GameObject door1;
+    public bool door1Active = true;
     public ScoreCounter scoreCounter;
+    public TextMeshProUGUI savingText;
+
+    [Header("Saving")]
+    public float saveInterval = 15f;
     [Header("Upgradable Stats")]
     public float playerJumpHeight = 8f;
+    private float prefUpdateTime = 0f;
 
     void Start(){
-        redPad.SetActive(false);
+        StartCoroutine(UpdatePrefInterval());
+        CheckPrefs();
+    }
+
+    void Update(){
+        redPad.SetActive(redPadActive);
+        door1.SetActive(door1Active);
+    }
+
+    IEnumerator UpdatePrefInterval(){
+        while(true){
+            savingText.text = "";
+            yield return new WaitForSeconds(saveInterval);
+            savingText.text = "Saving...";
+            UpdateAllPrefs();
+            UnityEngine.Debug.Log("Saved Data");
+            yield return new WaitForSeconds(3f);
+            savingText.text = "";
+        }
+    }
+
+    public void UpdateAllPrefs(){
+        player.UpdatePrefs();
+        rock.UpdatePrefs();
+        scoreCounter.UpdatePrefs();
+        UpdateThisPrefs();
+        //find all objects with 'upgrade' tag
+        GameObject[] buyables = GameObject.FindGameObjectsWithTag("Upgrade");
+        foreach(GameObject buyable in buyables){
+            buyable.GetComponent<Buyable>().UpdatePrefs();
+        }
+    }
+
+    private void CheckPrefs(){
+        if(PlayerPrefs.HasKey("redPad")){
+            redPadActive = Convert.ToBoolean(PlayerPrefs.GetInt("redPadActive"));
+            UnityEngine.Debug.Log("Got old redPadActive: " + redPadActive);
+        }
+        else{
+            PlayerPrefs.SetInt("redPad", Convert.ToInt32(false));
+            redPadActive = false;
+            UnityEngine.Debug.Log("Made new redPadActive: " + redPadActive);
+        }
+        if(PlayerPrefs.HasKey("door1")){
+            door1Active = Convert.ToBoolean(PlayerPrefs.GetInt("door1Active"));
+            UnityEngine.Debug.Log("Got old door1Active: " + door1Active);
+        }
+        else{
+            PlayerPrefs.SetInt("door1", Convert.ToInt32(true));
+            door1Active = true;
+            UnityEngine.Debug.Log("Made new door1Active: " + door1Active);
+        }
+    }
+
+    private void UpdateThisPrefs(){
+        if(redPadActive){
+            PlayerPrefs.SetInt("redPadActive", Convert.ToInt32(true));
+        }
+        else{
+            PlayerPrefs.SetInt("redPadActive", Convert.ToInt32(false));
+        }
+        if(door1Active){
+            PlayerPrefs.SetInt("door1Active", Convert.ToInt32(true));
+        }
+        else{
+            PlayerPrefs.SetInt("door1Active", Convert.ToInt32(false));
+        }
+        UnityEngine.Debug.Log("Updated redPad: " + Convert.ToBoolean(PlayerPrefs.GetInt("redPadActive")));
+    }
+
+    public void ClearPrefs(){
+        PlayerPrefs.DeleteAll();
+        //reload scene
+        SceneManager.LoadScene(SceneManager.GetActiveScene().name);
     }
 
     public bool checkPrice(float cost, string currency)
@@ -93,7 +176,9 @@ public class UpgradeManager : MonoBehaviour
                 break;
             case "redPad":
                 redPadActive = true;
-                redPad.SetActive(true);
+                break;
+            case "unlockDoor1":
+                door1Active = false;
                 break;
         }
     }

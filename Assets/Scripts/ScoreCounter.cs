@@ -13,6 +13,38 @@ public class ScoreCounter : MonoBehaviour
     public TextMeshProUGUI scoreText;
     public TextMeshProUGUI shardText;
     public bool shardsUnlocked = false;
+    private float prefUpdateTime = 0f;
+
+    void Start(){
+        CheckPrefs();
+    }
+
+    private void CheckPrefs(){
+        if(PlayerPrefs.HasKey("shardsUnlocked")){
+            shardsUnlocked = Convert.ToBoolean(PlayerPrefs.GetInt("shardsUnlocked"));
+        }
+        else{
+            PlayerPrefs.SetInt("shardsUnlocked", Convert.ToInt32(shardsUnlocked));
+        }
+        if(PlayerPrefs.HasKey("pebbles")){
+            score = PlayerPrefs.GetFloat("pebbles");
+        }
+        else{
+            PlayerPrefs.SetFloat("pebbles", score);
+        }
+        if(PlayerPrefs.HasKey("shards")){
+            shards = PlayerPrefs.GetFloat("shards");
+        }
+        else{
+            PlayerPrefs.SetFloat("shards", shards);
+        }
+    }
+
+    public void UpdatePrefs(){
+        PlayerPrefs.SetFloat("pebbles", score);
+        PlayerPrefs.SetFloat("shards", shards);
+        PlayerPrefs.SetInt("shardsUnlocked", Convert.ToInt32(shardsUnlocked));
+    }
 
     void Update(){
         if(shardsUnlocked){

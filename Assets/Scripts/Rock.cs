@@ -16,6 +16,29 @@ public class Rock : MonoBehaviour
     public float shakeTime = 0.2f;
     public float shardIncrement = 1f;
 
+    void Start(){
+        CheckPrefs();
+    }
+
+    private void CheckPrefs(){
+        if(PlayerPrefs.HasKey("rockStage")){
+            rockStage = PlayerPrefs.GetFloat("rockStage");
+        }
+        else{
+            PlayerPrefs.SetFloat("rockStage", 1f);
+        }
+        if(PlayerPrefs.HasKey("rockValue")){
+            scoreMultiplier = PlayerPrefs.GetFloat("rockValue");
+        }
+        else{
+            PlayerPrefs.SetFloat("rockValue", 1f);
+        }
+    }
+
+    public void UpdatePrefs(){
+        PlayerPrefs.SetFloat("rockStage", rockStage);
+    }
+
     void Update(){
         if(rockStage == 1f){
             hitEffect.startColor = new Color(1f, 1f, 1f, 1f);
@@ -34,7 +57,6 @@ public class Rock : MonoBehaviour
             Shake(velocity);
             ParticleSystem effect = Instantiate(hitEffect, transform.position, Quaternion.identity);
             ParticleSystem.MainModule main = effect.main;
-            UnityEngine.Debug.Log(prevVelocity - minimumVelocity);
             if(velocity <= 0){
                 velocity = 0;
             }else{
@@ -63,8 +85,9 @@ public class Rock : MonoBehaviour
     }
 
     public void Shake(float velocity){
+        UnityEngine.Debug.Log("Shake + " + velocity);
         float shakePower = velocity/5f;
-        if(shakePower <= 0f){return;}
+        if(shakePower <= -1f){return;}
         impulseSource.GenerateImpulseWithForce(shakePower);
     }
 }

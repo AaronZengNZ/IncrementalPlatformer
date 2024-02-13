@@ -24,9 +24,29 @@ public class Buyable : MonoBehaviour
     [Header("MISC")]
     public float experienceParticlesSpawned = 10f;
     public Color experienceParticleColor;
+    public string UpgradeName = "null";
     public bool infiniteBuyable = false;
     private bool showDescription = false;
     private bool buyCooldown = false;
+    private float prefUpdateTime = 0f;
+
+    void Start(){
+        if(PlayerPrefs.HasKey("buyable_"+UpgradeName)){
+            level = PlayerPrefs.GetInt("buyable_"+UpgradeName);
+            if(level <= 0){
+                PlayerPrefs.SetInt("buyable_"+UpgradeName, 1);
+                level = 1;
+            }
+        }
+        else{
+            PlayerPrefs.SetInt("buyable_"+UpgradeName, 1);
+            level = 1;
+        }
+    }
+
+    public void UpdatePrefs(){
+        PlayerPrefs.SetInt("buyable_"+UpgradeName, level);
+    }
 
     void Update(){
         if(level > levels){

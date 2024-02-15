@@ -28,6 +28,7 @@ public class ScoreCounter : MonoBehaviour
         }
         if(PlayerPrefs.HasKey("pebbles")){
             score = PlayerPrefs.GetFloat("pebbles");
+            scoreLerp = score;
         }
         else{
             PlayerPrefs.SetFloat("pebbles", score);

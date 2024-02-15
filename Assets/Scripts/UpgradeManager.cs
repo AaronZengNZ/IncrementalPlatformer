@@ -16,12 +16,15 @@ public class UpgradeManager : MonoBehaviour
     public bool door1Active = true;
     public ScoreCounter scoreCounter;
     public TextMeshProUGUI savingText;
+    public GameObject playerClone;
+    public Transform playerCloneInstantiateLocation;
 
     [Header("Saving")]
     public float saveInterval = 15f;
     [Header("Upgradable Stats")]
-    public float playerJumpHeight = 8f;
     private float prefUpdateTime = 0f;
+    public int playerClones = 0;
+    private int playerClonesInstantiated = 0;
 
     void Start(){
         StartCoroutine(UpdatePrefInterval());
@@ -31,6 +34,14 @@ public class UpgradeManager : MonoBehaviour
     void Update(){
         redPad.SetActive(redPadActive);
         door1.SetActive(door1Active);
+        if(playerClonesInstantiated < playerClones){
+            InstantiatePlayerClone();
+        }
+    }
+
+    private void InstantiatePlayerClone(){
+        GameObject clone = Instantiate(playerClone, playerCloneInstantiateLocation.position, Quaternion.identity);
+        playerClonesInstantiated++;
     }
 
     IEnumerator UpdatePrefInterval(){
@@ -76,6 +87,13 @@ public class UpgradeManager : MonoBehaviour
             door1Active = true;
             UnityEngine.Debug.Log("Made new door1Active: " + door1Active);
         }
+        if(PlayerPrefs.HasKey("playerClones")){
+            playerClones = PlayerPrefs.GetInt("playerClones");
+        }
+        else{
+            PlayerPrefs.SetInt("playerClones", 0);
+            playerClones = 0;
+        }
     }
 
     private void UpdateThisPrefs(){
@@ -91,6 +109,7 @@ public class UpgradeManager : MonoBehaviour
         else{
             PlayerPrefs.SetInt("door1Active", Convert.ToInt32(false));
         }
+        PlayerPrefs.SetInt("playerClones", playerClones);
         UnityEngine.Debug.Log("Updated redPad: " + Convert.ToBoolean(PlayerPrefs.GetInt("redPadActive")));
     }
 
@@ -179,6 +198,13 @@ public class UpgradeManager : MonoBehaviour
                 break;
             case "unlockDoor1":
                 door1Active = false;
+                break;
+            case "playerClones":
+                playerClones += (int)amount;
+                InstantiatePlayerClone();
+                break;
+            case "redBoostValue":
+                player.redBoostValue += amount;
                 break;
         }
     }

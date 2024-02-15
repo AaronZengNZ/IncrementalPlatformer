@@ -15,6 +15,7 @@ public class Rock : MonoBehaviour
     public float rockStage = 1f;
     public float shakeTime = 0.2f;
     public float shardIncrement = 1f;
+    public float maxXDistance = 5f;
 
     void Start(){
         CheckPrefs();
@@ -76,18 +77,27 @@ public class Rock : MonoBehaviour
         }
     }
 
-    private void HitCalculation(float velocity, float boostValue){
+    private void HitCalculation(float velocity, float boostValue = 1f){
         float scoreIncrease = Mathf.Floor(velocity  * scoreMultiplier * boostValue);
         scoreCounter.UpdateScore(scoreIncrease);
         if(scoreIncrease > 0f){
-            scoreCounter.UpdateShards(shardIncrement);
+            scoreCounter.UpdateShards(shardIncrement*boostValue);
         }
     }
 
     public void Shake(float velocity){
+        //find the x distance to player
+        float xDistance = Mathf.Abs(transform.position.x - GameObject.Find("Player").transform.position.x);
+        float xShake = 1 - (xDistance / maxXDistance);
+        if(velocity < 0){xShake = 1f;}
+        else if(xShake <= 0f){return;}
+        if(xShake > 1f){xShake = 1f;}
         UnityEngine.Debug.Log("Shake + " + velocity);
-        float shakePower = velocity/5f;
+        float shakePower = velocity/5f * xShake;
         if(shakePower <= -1f){return;}
+        if(shakePower >= 5f){
+            shakePower = 5f + Mathf.Sqrt(shakePower-5f);
+        }
         impulseSource.GenerateImpulseWithForce(shakePower);
     }
 }

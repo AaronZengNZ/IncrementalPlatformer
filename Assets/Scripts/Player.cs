@@ -34,7 +34,7 @@ public class Player : MonoBehaviour
     public float autoJumpsLeft = 0f;
     public bool autoJumpsToggled = false;
     public float redBoostTimeLeft = 0f;
-    private float redBoostValue = 5f;
+    public float redBoostValue = 5f;
     private bool gravityTripled = false;
 
     private bool grounded = false;
@@ -48,7 +48,6 @@ public class Player : MonoBehaviour
     {
         rebounding = false;
         colliding = false;
-        StartCoroutine(regenAutoJumps());
         CheckPrefs();
     }
 
@@ -87,6 +86,12 @@ public class Player : MonoBehaviour
         else{
             PlayerPrefs.SetFloat("playerAutoJumps", maxAutoJumps);
         }
+        if(PlayerPrefs.HasKey("redBoostValue")){
+            redBoostValue = PlayerPrefs.GetFloat("redBoostValue");
+        }
+        else{
+            PlayerPrefs.SetFloat("redBoostValue", redBoostValue);
+        }
     }
     public void UpdatePrefs(){
         PlayerPrefs.SetFloat("playerJumpHeight", jumpHeight);
@@ -94,6 +99,7 @@ public class Player : MonoBehaviour
         PlayerPrefs.SetFloat("playerGravityPower", gravityPower);
         PlayerPrefs.SetFloat("playerXHoming", xHoming);
         PlayerPrefs.SetFloat("playerAutoJumps", maxAutoJumps);
+        PlayerPrefs.SetFloat("redBoostValue", redBoostValue);
     }
     void Update()
     {
@@ -105,6 +111,14 @@ public class Player : MonoBehaviour
         boostCalculations();
         previousVelocity = rb.velocity;
         previousYMagnitude = Mathf.Abs(rb.velocity.y);
+    }
+
+    public bool useAutoJump(float amount = 1f){
+        if(autoJumpsLeft >= amount){
+            autoJumpsLeft -= amount;
+            return true;
+        }
+        return false;
     }
 
     private void boostCalculations(){
@@ -125,15 +139,6 @@ public class Player : MonoBehaviour
         }
         if(autoJumpsLeft <= 0f){
             autoJumpsToggled = false;
-        }
-    }
-
-    IEnumerator regenAutoJumps(){
-        while(true){
-            if(autoJumpsLeft < maxAutoJumps && !autoJumpsToggled){
-                autoJumpsLeft += 1f;            
-            }
-            yield return new WaitForSeconds(1f / autoJumpRegenSpeed);
         }
     }
 
@@ -213,7 +218,7 @@ public class Player : MonoBehaviour
         rebounding = true;
     }
 
-    private float GetAbsNumber(float num){
+    public float GetAbsNumber(float num){
         if(num < 0){
             return -1;
         }

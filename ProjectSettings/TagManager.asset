@@ -9,6 +9,7 @@ TagManager:
   - Upgrade
   - RedPad
   - TripleGravity
+  - GreenPad
   layers:
   - Default
   - TransparentFX

@@ -12,6 +12,8 @@ public class UpgradeManager : MonoBehaviour
     public Rock rock;
     public GameObject redPad;
     public bool redPadActive = false;
+    public GameObject greenPad;
+    public bool greenPadActive = false;
     public GameObject door1;
     public bool door1Active = true;
     public ScoreCounter scoreCounter;
@@ -34,6 +36,7 @@ public class UpgradeManager : MonoBehaviour
     void Update(){
         redPad.SetActive(redPadActive);
         door1.SetActive(door1Active);
+        greenPad.SetActive(greenPadActive);
         if(playerClonesInstantiated < playerClones){
             InstantiatePlayerClone();
         }
@@ -71,21 +74,17 @@ public class UpgradeManager : MonoBehaviour
     private void CheckPrefs(){
         if(PlayerPrefs.HasKey("redPad")){
             redPadActive = Convert.ToBoolean(PlayerPrefs.GetInt("redPadActive"));
-            UnityEngine.Debug.Log("Got old redPadActive: " + redPadActive);
         }
         else{
             PlayerPrefs.SetInt("redPad", Convert.ToInt32(false));
             redPadActive = false;
-            UnityEngine.Debug.Log("Made new redPadActive: " + redPadActive);
         }
         if(PlayerPrefs.HasKey("door1")){
             door1Active = Convert.ToBoolean(PlayerPrefs.GetInt("door1Active"));
-            UnityEngine.Debug.Log("Got old door1Active: " + door1Active);
         }
         else{
             PlayerPrefs.SetInt("door1", Convert.ToInt32(true));
             door1Active = true;
-            UnityEngine.Debug.Log("Made new door1Active: " + door1Active);
         }
         if(PlayerPrefs.HasKey("playerClones")){
             playerClones = PlayerPrefs.GetInt("playerClones");
@@ -93,6 +92,13 @@ public class UpgradeManager : MonoBehaviour
         else{
             PlayerPrefs.SetInt("playerClones", 0);
             playerClones = 0;
+        }
+        if(PlayerPrefs.HasKey("greenPad")){
+            greenPadActive = Convert.ToBoolean(PlayerPrefs.GetInt("greenPadActive"));
+        }
+        else{
+            PlayerPrefs.SetInt("greenPad", Convert.ToInt32(false));
+            greenPadActive = false;
         }
     }
 
@@ -108,6 +114,12 @@ public class UpgradeManager : MonoBehaviour
         }
         else{
             PlayerPrefs.SetInt("door1Active", Convert.ToInt32(false));
+        }
+        if(greenPadActive){
+            PlayerPrefs.SetInt("greenPadActive", Convert.ToInt32(true));
+        }
+        else{
+            PlayerPrefs.SetInt("greenPadActive", Convert.ToInt32(false));
         }
         PlayerPrefs.SetInt("playerClones", playerClones);
         UnityEngine.Debug.Log("Updated redPad: " + Convert.ToBoolean(PlayerPrefs.GetInt("redPadActive")));
@@ -184,7 +196,7 @@ public class UpgradeManager : MonoBehaviour
                 player.gravityPower += amount;
                 break;
             case "xHoming":
-                player.xHoming += amount;
+                player.xHomingRange += amount;
                 break;
             case "autoJumps":
                 player.maxAutoJumps += amount;
@@ -206,6 +218,54 @@ public class UpgradeManager : MonoBehaviour
             case "redBoostValue":
                 player.redBoostValue += amount;
                 break;
+            case "shardGain":
+                rock.shardIncrement += amount;
+                break;
+            case "greenPad":
+                greenPadActive = true;
+                break;
+            case "greenBoostValue":
+                player.greenPadPower += amount;
+                break;
         }
+    }
+
+    public float GetValue(string upgradeType){
+        switch (upgradeType)
+        {
+            case "rockStage":
+                return rock.rockStage;
+            case "rockValue":
+                return rock.scoreMultiplier;
+            case "jumpHeight":
+                return player.jumpHeight;
+            case "doubleJump":
+                return player.jumps;
+            case "smashPower":
+                return player.smashPower;
+            case "gravityWell":
+                return player.gravityPower;
+            case "xHoming":
+                return player.xHomingRange;
+            case "autoJumps":
+                return player.maxAutoJumps;
+            case "unlockShards":
+                return 0;
+            case "redPad":
+                return 0;
+            case "unlockDoor1":
+                return 0;
+            case "playerClones":
+                return playerClones;
+            case "redBoostValue":
+                return player.redBoostValue;
+            case "shardGain":
+                return rock.shardIncrement;
+            case "greenPad":
+                return 0;
+            case "greenBoostValue":
+                return player.greenPadPower;
+        }
+        return 0;
     }
 }

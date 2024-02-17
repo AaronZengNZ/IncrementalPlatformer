@@ -10,7 +10,10 @@ public class Player : MonoBehaviour
     public GameObject groundCollider;
     public Transform rock;
     public TextMeshProUGUI autoJumpsLeftText;
+    public TextMeshProUGUI autoJumpsToggledUIText;
+    public TextMeshProUGUI autoJumpsLeftUIText;
     public ParticleSystem redBoostEffect;
+    public ParticleSystem greenBoostEffect;
 
     [Header("Movement")]
     public float moveSpeed = 5f;
@@ -35,6 +38,8 @@ public class Player : MonoBehaviour
     public bool autoJumpsToggled = false;
     public float redBoostTimeLeft = 0f;
     public float redBoostValue = 5f;
+    public bool touchingGreenPad = false;
+    public float greenPadPower = 2f;
     private bool gravityTripled = false;
 
     private bool grounded = false;
@@ -48,6 +53,8 @@ public class Player : MonoBehaviour
     {
         rebounding = false;
         colliding = false;
+        autoJumpsLeftUIText.text = "";
+        autoJumpsToggledUIText.text = "";
         CheckPrefs();
     }
 
@@ -74,11 +81,11 @@ public class Player : MonoBehaviour
         else{
             PlayerPrefs.SetFloat("playerGravityPower", gravityPower);
         }
-        if(PlayerPrefs.HasKey("playerXHoming")){
-            xHoming = PlayerPrefs.GetFloat("playerXHoming");
+        if(PlayerPrefs.HasKey("playerXHomingRange")){
+            xHomingRange = PlayerPrefs.GetFloat("playerXHomingRange");
         }
         else{
-            PlayerPrefs.SetFloat("playerXHoming", xHoming);
+            PlayerPrefs.SetFloat("playerXHomingRange", xHomingRange);
         }
         if(PlayerPrefs.HasKey("playerAutoJumps")){
             maxAutoJumps = PlayerPrefs.GetFloat("playerAutoJumps");
@@ -92,14 +99,21 @@ public class Player : MonoBehaviour
         else{
             PlayerPrefs.SetFloat("redBoostValue", redBoostValue);
         }
+        if(PlayerPrefs.HasKey("greenBoostValue")){
+            greenPadPower = PlayerPrefs.GetFloat("greenBoostValue");
+        }
+        else{
+            PlayerPrefs.SetFloat("greenBoostValue", greenPadPower);
+        }
     }
     public void UpdatePrefs(){
         PlayerPrefs.SetFloat("playerJumpHeight", jumpHeight);
         PlayerPrefs.SetFloat("playerSmashPower", smashPower);
         PlayerPrefs.SetFloat("playerGravityPower", gravityPower);
-        PlayerPrefs.SetFloat("playerXHoming", xHoming);
+        PlayerPrefs.SetFloat("playerXHomingRange", xHomingRange);
         PlayerPrefs.SetFloat("playerAutoJumps", maxAutoJumps);
         PlayerPrefs.SetFloat("redBoostValue", redBoostValue);
+        PlayerPrefs.SetFloat("greenBoostValue", greenPadPower);
     }
     void Update()
     {
@@ -130,6 +144,7 @@ public class Player : MonoBehaviour
             redBoostTimeLeft = 0f;
             redBoostEffect.enableEmission = false;
         }
+        greenBoostEffect.enableEmission = touchingGreenPad;
     }
 
     private void autoJumpCalculations(){
@@ -139,6 +154,17 @@ public class Player : MonoBehaviour
         }
         if(autoJumpsLeft <= 0f){
             autoJumpsToggled = false;
+        }
+        if(maxAutoJumps > 0f){
+            if(autoJumpsToggled){
+                autoJumpsToggledUIText.text = "Auto Jumps: On [Press z to toggle]";
+            }
+            else{
+                autoJumpsToggledUIText.text = "Auto Jumps: Off [Press z to toggle]";
+            }
+        }
+        if(maxAutoJumps > 0f){
+            autoJumpsLeftUIText.text = "[" + autoJumpsLeft + "/" + maxAutoJumps + "]";
         }
     }
 
@@ -165,7 +191,7 @@ public class Player : MonoBehaviour
     }
 
     private void OnTriggerEnter2D(Collider2D other) {
-        if(other.gameObject.tag == "Upgrade"){
+        if(other.gameObject.tag == "Upgrade" && !autoJumpsToggled){
             if(previousVelocity.y > 0){
                 rb.velocity = new Vector2(rb.velocity.x, -previousVelocity.y);
                 other.GetComponent<Buyable>().TryUpgrade();
@@ -174,6 +200,9 @@ public class Player : MonoBehaviour
         }
         if(other.gameObject.tag == "RedPad"){
             redBoostTimeLeft = 5f;
+        }
+        if(other.gameObject.tag == "GreenPad"){
+            touchingGreenPad = true;
         }
         if(other.gameObject.tag == "TripleGravity"){
             if(!gravityTripled){
@@ -187,6 +216,9 @@ public class Player : MonoBehaviour
             if(gravityTripled){
                 gravityTripled = false;
             }
+        }
+        if(other.gameObject.tag == "GreenPad"){
+            touchingGreenPad = false;
         }
     }
 
@@ -230,6 +262,9 @@ public class Player : MonoBehaviour
     private void Movement(){
         if(rebounding && !grounded){return;}
         float x = Input.GetAxis("Horizontal");
+        if(!Input.GetButton("InputRight") && !Input.GetButton("InputLeft")){
+            x = Input.GetAxis("Horizontal") / 3f;
+        }
         rb.velocity = new Vector2(x * moveSpeed, rb.velocity.y);
         rb.angularVelocity += rotationalMovementForce * rb.velocity.x * -Time.deltaTime;
         if(rock != null && Mathf.Abs(transform.position.x - rock.position.x) < xHomingRange && xHoming > 0f && !grounded && !rebounding){
@@ -267,7 +302,7 @@ public class Player : MonoBehaviour
 
     private void AccelerateDown(){
         if(gravityTripled){
-            rb.velocity += Vector2.up * Physics2D.gravity.y * (3f*gravityPower) * Time.deltaTime;
+            rb.velocity += Vector2.up * Physics2D.gravity.y * (5f) * Time.deltaTime;
         }
         else if(rb.velocity.y < 0 || !Input.GetButton("Jump") && !autoJumpsToggled || rebounding){
             rb.velocity += Vector2.up * Physics2D.gravity.y * (2.5f*gravityPower) * Time.deltaTime;

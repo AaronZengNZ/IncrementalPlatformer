@@ -34,28 +34,34 @@ public class Rock : MonoBehaviour
         else{
             PlayerPrefs.SetFloat("rockValue", 1f);
         }
+        if(PlayerPrefs.HasKey("shardIncrement")){
+            shardIncrement = PlayerPrefs.GetFloat("shardIncrement");
+        }
+        else{
+            PlayerPrefs.SetFloat("shardIncrement", 1f);
+        }
     }
 
     public void UpdatePrefs(){
         PlayerPrefs.SetFloat("rockStage", rockStage);
+        PlayerPrefs.SetFloat("rockValue", scoreMultiplier);
+        PlayerPrefs.SetFloat("shardIncrement", shardIncrement);
     }
 
     void Update(){
         if(rockStage == 1f){
             hitEffect.startColor = new Color(1f, 1f, 1f, 1f);
             rockSprite.color = new Color(1f, 1f, 1f, 1f);
-            scoreMultiplier = 1f;
         }else if(rockStage == 2f){
             hitEffect.startColor = new Color(0.9f, 0.7f, 0f, 1f);
             rockSprite.color = new Color(0.75f, 0.6f, 0f, 1f);
-            scoreMultiplier = 3f;
         }
     }
-    public void Collision(GameObject other, float prevVelocity, float smashPower, float boostValue){
+    public void Collision(GameObject other, float prevVelocity, float smashPower, float boostValue, float shakePower = 1f){
         if(other.tag == "Player"){
             //instanitate the hit effect and make it point towards player
             float velocity = Mathf.Floor((prevVelocity - minimumVelocity) * smashPower);
-            Shake(velocity);
+            Shake(velocity, shakePower);
             ParticleSystem effect = Instantiate(hitEffect, transform.position, Quaternion.identity);
             ParticleSystem.MainModule main = effect.main;
             if(velocity <= 0){
@@ -72,7 +78,7 @@ public class Rock : MonoBehaviour
             if(scoreCounter.shardsUnlocked && velocity > 0){
                 ParticleSystem shard = Instantiate(shardEffect, transform.position, effect.transform.rotation);
                 ParticleSystem.MainModule shardMain = shard.main;
-                shardMain.maxParticles = (int)Mathf.Floor(Mathf.Sqrt(shardIncrement));
+                shardMain.maxParticles = (int)Mathf.Floor(Mathf.Sqrt(shardIncrement * boostValue));
             }
         }
     }
@@ -85,7 +91,7 @@ public class Rock : MonoBehaviour
         }
     }
 
-    public void Shake(float velocity){
+    public void Shake(float velocity, float shakePowerTemp = 1f){
         //find the x distance to player
         float xDistance = Mathf.Abs(transform.position.x - GameObject.Find("Player").transform.position.x);
         float xShake = 1 - (xDistance / maxXDistance);
@@ -93,7 +99,7 @@ public class Rock : MonoBehaviour
         else if(xShake <= 0f){return;}
         if(xShake > 1f){xShake = 1f;}
         UnityEngine.Debug.Log("Shake + " + velocity);
-        float shakePower = velocity/5f * xShake;
+        float shakePower = velocity/5f * xShake * shakePowerTemp;
         if(shakePower <= -1f){return;}
         if(shakePower >= 5f){
             shakePower = 5f + Mathf.Sqrt(shakePower-5f);

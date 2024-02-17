@@ -49,7 +49,7 @@ public class ScoreCounter : MonoBehaviour
 
     void Update(){
         if(shardsUnlocked){
-            shardText.text = "Shards: " + Mathf.RoundToInt(shards).ToString();
+            shardText.text = "Shards: " + Mathf.RoundToInt(shards).ToString("n0");
         }
         else{
             shardText.text = "";
@@ -59,14 +59,14 @@ public class ScoreCounter : MonoBehaviour
         if(Mathf.Round(scoreLerp) > Mathf.Round(score)){indent = "-";}
         else if(Mathf.Round(scoreLerp) < Mathf.Round(score)){indent = "+";}
         else{
-            scoreText.text = Mathf.RoundToInt(scoreLerp).ToString();
+            scoreText.text = Mathf.RoundToInt(scoreLerp).ToString("n0");
             return;
         }
         if(Mathf.Abs(score - scoreLerp) < score / 50000f / scoreLerpSpeed){
-            scoreText.text = Mathf.RoundToInt(score).ToString();
+            scoreText.text = Mathf.RoundToInt(score).ToString("n0");
             return;
         }
-        scoreText.text = Mathf.RoundToInt(scoreLerp).ToString() + indent + Mathf.RoundToInt(Mathf.Abs(score - scoreLerp)).ToString();
+        scoreText.text = Mathf.RoundToInt(scoreLerp).ToString("n0") + indent + Mathf.RoundToInt(Mathf.Abs(score - scoreLerp)).ToString("n0");
     }
     
     public void UpdateScore(float amount){

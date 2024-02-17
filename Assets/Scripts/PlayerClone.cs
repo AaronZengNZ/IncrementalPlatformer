@@ -23,6 +23,8 @@ public class PlayerClone : MonoBehaviour
     public float smashPower = 1f;
     public float gravityPower = 1f;
     public float autoJumpsLeft = 0f;
+    public float greenPadPower = 2f;
+    public bool touchingGreenPad = false;
     public bool autoJumpsToggled = false;
     private bool grounded = false;
     private bool rebounding = false;
@@ -55,6 +57,8 @@ public class PlayerClone : MonoBehaviour
         smashPower = player.smashPower;
         gravityPower = player.gravityPower;
         autoJumpsLeft = player.autoJumpsLeft;
+        greenPadPower = player.greenPadPower;
+        touchingGreenPad = player.touchingGreenPad;
     }
 
     // Update is called once per frame
@@ -102,7 +106,11 @@ public class PlayerClone : MonoBehaviour
 
     private void CallCollision(GameObject other){
         if(colliding){return;}
-        other.GetComponent<Rock>().Collision(this.gameObject, previousYMagnitude, smashPower, 1f);
+        float boostTotal = 1f;
+        if(touchingGreenPad){
+            boostTotal *= greenPadPower;
+        }
+        other.GetComponent<Rock>().Collision(this.gameObject, previousYMagnitude, smashPower, boostTotal, 0.5f);
     }
 
     private void CollisionRebound(Transform other){

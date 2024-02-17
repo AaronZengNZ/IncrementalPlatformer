@@ -19,7 +19,10 @@ public class Buyable : MonoBehaviour
     public float[] amounts;
     public string upgradeType = "doubleJumps";
     public string effectStringPrefix;
-    public string[] effectStringSuffixes;
+    public string effectStringSuffixPrefix;
+    public string differentPrefix = "null";
+    public bool showSuffix = true;
+    public string boughtMaxSuffix = "[MAX]";
     public float xDistanceForDescription = 3f;
     [Header("MISC")]
     public float experienceParticlesSpawned = 10f;
@@ -49,15 +52,28 @@ public class Buyable : MonoBehaviour
     }
 
     void Update(){
+        CheckPlayerDistance();
+        animator.SetBool("ShowDescription", showDescription);
         if(level > levels){
             costText.text = "Max Level";
         }
         else{
-            costText.text = "Cost: " + costs[level-1].ToString();
+            costText.text = "Cost: " + costs[level-1].ToString("n0");
         }
-        effectText.text = "Effect: " + effectStringPrefix + " " + effectStringSuffixes[level-1];
-        CheckPlayerDistance();
-        animator.SetBool("ShowDescription", showDescription);
+        if(differentPrefix != "null" && !(level > levels)){
+            effectText.text = "Effect: " + differentPrefix;
+        }
+        else if(level > levels){
+            effectText.text = "Effect: " + effectStringPrefix + " " + boughtMaxSuffix;
+        }
+        else if(showSuffix){
+            effectText.text = "Effect: " + effectStringPrefix + " [" + effectStringSuffixPrefix
+                 + upgradeManager.GetValue(upgradeType) + "->" + effectStringSuffixPrefix + 
+                 (upgradeManager.GetValue(upgradeType) + amounts[level-1]) + "]";
+        }
+        else{
+            effectText.text = "Effect: " + effectStringPrefix;
+        }
     }
     private void CheckPlayerDistance(){
         if(Mathf.Abs(transform.position.x - upgradeManager.player.transform.position.x) < xDistanceForDescription){

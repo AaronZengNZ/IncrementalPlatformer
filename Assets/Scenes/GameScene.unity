@@ -28375,24 +28375,36 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   tipText: {fileID: 1574072492}
   tips:
-  - there is a random bug with jumping that the dev didn't fix.
-  - this objective tab system is very scuffed.
-  - you can press the '-' sign on the top left of these tabs to minimize them!
-  - the text panels in the tutorial part is the one used for displaying auto jumps.
-  - all of the jump height upgrades use the same sprite!
-  - the arrow from the objectives point towards where you need to go.
-  - gravity well had once had a game breaking bug. it is fixed now.
-  - the dev actually forgot to add up arrow to jump. it is added now.
+  - there is a random bug with jumping that the dev didn't fix. not going to elaborate
+    since it is exploitable.
+  - this objective tab system is very scuffed, everything is a child of another.
+    it will be very hard to add one more.
+  - you can press the '-' sign on the top left of these tabs to minimize them! it
+    took a long time to make this.
+  - the text panels in the tutorial part is the one used for displaying auto jumps,
+    with the text changed.
+  - all of the jump height upgrades use the same sprite! they all use the 4 squares
+    stack on each other.
+  - the arrow from the objectives point towards where you need to go, whether it
+    be an upgrade or the rock itself.
+  - gravity well had once had a game breaking bug that made the green area impossible.
+    it is fixed now.
+  - the dev actually forgot to add up arrow to jump. what a stupid idiot moron. don't
+    worry, it is added now.
   - the triple gravity stated in the green door upgrade is not true. it is actually
     sextupled gravity.
-  - this is the 10th fact! so random! wow!
-  - the implementation of these useless facts were inspired by u/PrinceOfDarkness4141!
-  - this game is the only game the dev has shared to reddit.
+  - this is the 10th fact! so random, what a useless fact! incredibly boring fact
+    with no application! wow!
+  - the implementation of these useless facts were inspired by a itch.io user by
+    the name of augustvc!
+  - this game is the only game the dev has shared to reddit, although there are a
+    lot more on itch.
   - the color of the useless facts tab is actually the same color as the shards text,
     only transparent!
   - clones of the player have no friction for some reason when they aren't jumping.
     not fixed.
   - the golden orb making the rock gold was actually a prototype for prestiging!
+    it will be removed in future updates.
   - if you didn't get the long jump ugprade, the green area gravity wouldn't affect
     the player at all!
   - the player was originally a white square, but it got changed to blue since it
@@ -28401,7 +28413,8 @@ MonoBehaviour:
     figure out how to get it in 2d.
   - this game was actually mildly inspired by [(the) gnorp apolouge]! you probably
     already knew that.
-  - there are 20 upgrades in the demo! this is also the 20th fact!
+  - there are 20 upgrades in the demo! this is also the 20th fact! even your jump
+    height maxes out at 20!
   usedTips: 
   currentTip: 0
   shownTipString: 

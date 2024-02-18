@@ -63,6 +63,8 @@ public class UpgradeManager : MonoBehaviour
         player.UpdatePrefs();
         rock.UpdatePrefs();
         scoreCounter.UpdatePrefs();
+        GameObject objectivesManager = GameObject.Find("ObjectivesManager");
+        objectivesManager.GetComponent<ObjectivesManager>().SetPrefs();
         UpdateThisPrefs();
         //find all objects with 'upgrade' tag
         GameObject[] buyables = GameObject.FindGameObjectsWithTag("Upgrade");
@@ -227,6 +229,10 @@ public class UpgradeManager : MonoBehaviour
             case "greenBoostValue":
                 player.greenPadPower += amount;
                 break;
+            case "completeTutorial":
+                PlayerPrefs.SetInt("tutorialCompleted", 1);
+                player.tutorialCompleted = true;
+                break;
         }
     }
 
@@ -246,15 +252,17 @@ public class UpgradeManager : MonoBehaviour
             case "gravityWell":
                 return player.gravityPower;
             case "xHoming":
-                return player.xHomingRange;
+                if(player.xHomingRange > 6){
+                    return 1;
+                }else {return 0;}
             case "autoJumps":
                 return player.maxAutoJumps;
             case "unlockShards":
-                return 0;
+                return turnToInt(scoreCounter.shardsUnlocked);
             case "redPad":
-                return 0;
+                return turnToInt(redPadActive);
             case "unlockDoor1":
-                return 0;
+                return turnToInt(door1Active, true);
             case "playerClones":
                 return playerClones;
             case "redBoostValue":
@@ -262,9 +270,24 @@ public class UpgradeManager : MonoBehaviour
             case "shardGain":
                 return rock.shardIncrement;
             case "greenPad":
-                return 0;
+                return turnToInt(greenPadActive);
             case "greenBoostValue":
                 return player.greenPadPower;
+            case "completeTutorial":
+                return turnToInt(player.tutorialCompleted);
+        }
+        return 0;
+    }
+
+    private float turnToInt(bool variable, bool reverse = false){
+        if(variable){
+            if(reverse){
+                return 0;
+            }
+            return 1;
+        }
+        if(reverse){
+            return 1;
         }
         return 0;
     }

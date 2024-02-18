@@ -32,22 +32,28 @@ public class Player : MonoBehaviour
     [Header("Other Values")]
     public float smashPower = 1f;
     public float gravityPower = 1f;
+    [Header("Auto Jumps")]
     public float maxAutoJumps = 0f;
     public float autoJumpRegenSpeed = 5f;
     public float autoJumpsLeft = 0f;
     public bool autoJumpsToggled = false;
+    [Header("Pads")]
     public float redBoostTimeLeft = 0f;
     public float redBoostValue = 5f;
     public bool touchingGreenPad = false;
     public float greenPadPower = 2f;
+    [Header("Tutorial Variables")]
+    public bool tutorialCompleted = false;
+    public Transform tutorialSpawn;
+    public Transform normalSpawn;
     private bool gravityTripled = false;
-
     private bool grounded = false;
     private bool rebounding = false;
     private bool colliding = false;
 
     private Vector2 previousVelocity = new Vector2(0, 0);
     private float previousYMagnitude = 0;
+    private bool upgrading = false;
 
     void Start()
     {
@@ -56,6 +62,12 @@ public class Player : MonoBehaviour
         autoJumpsLeftUIText.text = "";
         autoJumpsToggledUIText.text = "";
         CheckPrefs();
+        if(tutorialCompleted){
+            transform.position = normalSpawn.position;
+        }
+        else{
+            transform.position = tutorialSpawn.position;
+        }
     }
 
     void CheckPrefs(){
@@ -105,6 +117,12 @@ public class Player : MonoBehaviour
         else{
             PlayerPrefs.SetFloat("greenBoostValue", greenPadPower);
         }
+        if(PlayerPrefs.HasKey("tutorialCompleted")){
+            tutorialCompleted = PlayerPrefs.GetInt("tutorialCompleted") == 1;
+        }
+        else{
+            PlayerPrefs.SetInt("tutorialCompleted", 0);
+        }
     }
     public void UpdatePrefs(){
         PlayerPrefs.SetFloat("playerJumpHeight", jumpHeight);
@@ -114,6 +132,7 @@ public class Player : MonoBehaviour
         PlayerPrefs.SetFloat("playerAutoJumps", maxAutoJumps);
         PlayerPrefs.SetFloat("redBoostValue", redBoostValue);
         PlayerPrefs.SetFloat("greenBoostValue", greenPadPower);
+        PlayerPrefs.SetInt("tutorialCompleted", tutorialCompleted ? 1 : 0);
     }
     void Update()
     {
@@ -123,8 +142,15 @@ public class Player : MonoBehaviour
         AccelerateDown();
         autoJumpCalculations();
         boostCalculations();
+        upgradeRebound();
         previousVelocity = rb.velocity;
         previousYMagnitude = Mathf.Abs(rb.velocity.y);
+    }
+
+    private void upgradeRebound(){
+        if(previousVelocity.y > 0 && upgrading){
+            rb.velocity = new Vector2(rb.velocity.x, -previousVelocity.y);
+        }
     }
 
     public bool useAutoJump(float amount = 1f){
@@ -182,6 +208,7 @@ public class Player : MonoBehaviour
     private void OnCollisionEnter2D(Collision2D other) {
         if(other.gameObject.tag == "Ground"){
             rebounding = false;
+            upgrading = false;
         }
         if(other.gameObject.tag == "Rock"){
             CallCollision(other.gameObject);
@@ -191,9 +218,10 @@ public class Player : MonoBehaviour
     }
 
     private void OnTriggerEnter2D(Collider2D other) {
-        if(other.gameObject.tag == "Upgrade" && !autoJumpsToggled){
-            if(previousVelocity.y > 0){
-                rb.velocity = new Vector2(rb.velocity.x, -previousVelocity.y);
+        if(other.gameObject.tag == "Upgrade" && !autoJumpsToggled && !upgrading){
+            upgrading = true;
+            if(previousVelocity.y > 0f){
+                UnityEngine.Debug.Log(rb.velocity.y + " & " + previousVelocity.y);
                 other.GetComponent<Buyable>().TryUpgrade();
                 rock.GetComponent<Rock>().Shake(-1.5f);
             }
@@ -302,9 +330,9 @@ public class Player : MonoBehaviour
 
     private void AccelerateDown(){
         if(gravityTripled){
-            rb.velocity += Vector2.up * Physics2D.gravity.y * (5f) * Time.deltaTime;
+            rb.velocity += Vector2.up * Physics2D.gravity.y * (15f) * Time.deltaTime;
         }
-        else if(rb.velocity.y < 0 || !Input.GetButton("Jump") && !autoJumpsToggled || rebounding){
+        else if(rb.velocity.y < 0 || !Input.GetButton("Jump") && !autoJumpsToggled || rebounding || !tutorialCompleted){
             rb.velocity += Vector2.up * Physics2D.gravity.y * (2.5f*gravityPower) * Time.deltaTime;
         }
     }

@@ -78,4 +78,16 @@ public class ScoreCounter : MonoBehaviour
             shards += amount;
         }
     }
+
+    public float GetCurrency(string currency){
+        if(currency == "pebbles"){
+            return score;
+        }
+        else if(currency == "shards"){
+            return shards;
+        }
+        else{
+            return 0f;
+        }
+    }
 }

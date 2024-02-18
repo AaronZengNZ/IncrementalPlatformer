@@ -60,7 +60,7 @@ public class Rock : MonoBehaviour
     public void Collision(GameObject other, float prevVelocity, float smashPower, float boostValue, float shakePower = 1f){
         if(other.tag == "Player"){
             //instanitate the hit effect and make it point towards player
-            float velocity = Mathf.Floor((prevVelocity - minimumVelocity) * smashPower);
+            float velocity = Mathf.Floor((prevVelocity - minimumVelocity) * smashPower * 0.5f);
             Shake(velocity, shakePower);
             ParticleSystem effect = Instantiate(hitEffect, transform.position, Quaternion.identity);
             ParticleSystem.MainModule main = effect.main;
@@ -98,7 +98,6 @@ public class Rock : MonoBehaviour
         if(velocity < 0){xShake = 1f;}
         else if(xShake <= 0f){return;}
         if(xShake > 1f){xShake = 1f;}
-        UnityEngine.Debug.Log("Shake + " + velocity);
         float shakePower = velocity/5f * xShake * shakePowerTemp;
         if(shakePower <= -1f){return;}
         if(shakePower >= 5f){

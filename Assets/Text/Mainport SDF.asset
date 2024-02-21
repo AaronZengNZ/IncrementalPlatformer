@@ -136,7 +136,7 @@ MonoBehaviour:
     m_Scale: 1
     m_UnitsPerEM: 1000
     m_LineHeight: 63.65
-    m_AscentLine: 50.25
+    m_AscentLine: 52
     m_CapLine: 47
     m_MeanLine: 47
     m_Baseline: 0

@@ -10,6 +10,7 @@ TagManager:
   - RedPad
   - TripleGravity
   - GreenPad
+  - SetFont
   layers:
   - Default
   - TransparentFX

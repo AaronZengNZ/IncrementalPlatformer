@@ -14,6 +14,7 @@ public class Player : MonoBehaviour
     public TextMeshProUGUI autoJumpsLeftUIText;
     public ParticleSystem redBoostEffect;
     public ParticleSystem greenBoostEffect;
+    public TrailRenderer[] trails;
 
     [Header("Movement")]
     public float moveSpeed = 5f;
@@ -32,6 +33,7 @@ public class Player : MonoBehaviour
     [Header("Other Values")]
     public float smashPower = 1f;
     public float gravityPower = 1f;
+    public float currentTrail = 1f;
     [Header("Auto Jumps")]
     public float maxAutoJumps = 0f;
     public float autoJumpRegenSpeed = 5f;
@@ -143,8 +145,20 @@ public class Player : MonoBehaviour
         autoJumpCalculations();
         boostCalculations();
         upgradeRebound();
+        updateTrails();
         previousVelocity = rb.velocity;
         previousYMagnitude = Mathf.Abs(rb.velocity.y);
+    }
+
+    private void updateTrails(){
+        for(int i = 0; i < trails.Length; i++){
+            if(i == currentTrail-1f){
+                trails[i].emitting = true;
+            }
+            else{
+                trails[i].emitting = false;
+            }
+        }
     }
 
     private void upgradeRebound(){
@@ -296,7 +310,10 @@ public class Player : MonoBehaviour
         rb.velocity = new Vector2(x * moveSpeed, rb.velocity.y);
         rb.angularVelocity += rotationalMovementForce * rb.velocity.x * -Time.deltaTime;
         if(rock != null && Mathf.Abs(transform.position.x - rock.position.x) < xHomingRange && xHoming > 0f && !grounded && !rebounding){
-            rb.velocity = new Vector2(x * moveSpeed * 1.25f + (rock.position.x - transform.position.x) * xHoming, rb.velocity.y);
+            rb.velocity = new Vector2((rock.position.x - transform.position.x) * xHoming, rb.velocity.y);
+            if(Input.GetButton("InputRight") || Input.GetButton("InputLeft")){
+                rb.velocity = new Vector2(x * moveSpeed + (rock.position.x - transform.position.x) * xHoming * 0.25f, rb.velocity.y);
+            }
             rb.angularVelocity += rotationalMovementForce * rb.velocity.x * -Time.deltaTime;
         }
         //if distance to rock is less than xHomingRange, move towards rock

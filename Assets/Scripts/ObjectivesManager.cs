@@ -13,7 +13,7 @@ public class ObjectivesManager : MonoBehaviour
     public TextMeshProUGUI openCloseText2;
     public Animator animator3;
     public TextMeshProUGUI openCloseText3;
-    public GameObject tab3Gameobject;
+    public Animator animatorBigTab;
 
     [Header ("References")]
     public TextMeshProUGUI objectiveText;
@@ -30,6 +30,7 @@ public class ObjectivesManager : MonoBehaviour
     public bool showObjectives = false;
     public bool showTab2 = false;
     public bool showTab3 = false;
+    public bool showBigTab = false;
     private float currentObjectiveProgress;
     private float lerpedObjectiveProgress;
     public float lerpSpeed = 0.2f;
@@ -41,18 +42,16 @@ public class ObjectivesManager : MonoBehaviour
     {
         showObjectives = true;
         showTab2 = true;
-        showTab3 = true;
+        showTab3 = false;
+        showBigTab = true;
         CheckPrefs();
     }
 
     void Update(){
-        //if H is pressed, enable tab2
-        if(Input.GetKeyDown(KeyCode.H)){
-            tab3Gameobject.SetActive(tab3Gameobject.activeSelf ? false : true);
-        }
         animator.SetBool("Showing", showObjectives);
         animator2.SetBool("Showing", showTab2);
         animator3.SetBool("Showing", showTab3);
+        animatorBigTab.SetBool("Showing", showBigTab);
         lerpedObjectiveProgress = Mathf.Lerp(lerpedObjectiveProgress, currentObjectiveProgress, Time.deltaTime * (1f / lerpSpeed));
         GetObjectiveVariables();
         GetNextObjective();
@@ -139,6 +138,9 @@ public class ObjectivesManager : MonoBehaviour
             else{
                 openCloseText3.text = "+";
             }
+        }
+        if(objectiveNum == 4f){
+            showBigTab = !showBigTab;
         }
     }
 }

@@ -11,6 +11,7 @@ public class Buyable : MonoBehaviour
     public TextMeshProUGUI effectText;
     public Animator animator;
     public GameObject experienceParticle;
+    public BigNumberHandler bigNumberHandler;
     [Header("Values")]
     public float[] costs;
     public string currency = "pebbles";
@@ -31,9 +32,14 @@ public class Buyable : MonoBehaviour
     public bool infiniteBuyable = false;
     private bool showDescription = false;
     private bool buyCooldown = false;
-    private float prefUpdateTime = 0f;
 
     void Start(){
+        //find scoremanager and get bignumberhandler
+        bigNumberHandler = GameObject.Find("ScoreCounter").GetComponent<BigNumberHandler>();
+        CheckPrefs();
+    }
+
+    private void CheckPrefs(){
         if(PlayerPrefs.HasKey("buyable_"+UpgradeName)){
             level = PlayerPrefs.GetInt("buyable_"+UpgradeName);
             if(level <= 0){
@@ -58,7 +64,7 @@ public class Buyable : MonoBehaviour
             costText.text = "Max Level";
         }
         else{
-            costText.text = "Cost: " + costs[level-1].ToString("n0");
+            costText.text = "Cost: " + bigNumberHandler.ConvertToString(costs[level-1]);
         }
         if(differentPrefix != "null" && !(level > levels)){
             effectText.text = "Effect: " + differentPrefix;
@@ -69,7 +75,7 @@ public class Buyable : MonoBehaviour
         else if(showSuffix){
             effectText.text = "Effect: " + effectStringPrefix + " [" + effectStringSuffixPrefix
                  + upgradeManager.GetValue(upgradeType) + "->" + effectStringSuffixPrefix + 
-                 (upgradeManager.GetValue(upgradeType) + amounts[level-1]) + "]";
+                 (upgradeManager.GetValue(upgradeType) + bigNumberHandler.ConvertToString(amounts[level-1])) + "]";
         }
         else{
             effectText.text = "Effect: " + effectStringPrefix;

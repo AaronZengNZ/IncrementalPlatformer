@@ -14,6 +14,7 @@ public class ObjectivesManager : MonoBehaviour
     public Animator animator3;
     public TextMeshProUGUI openCloseText3;
     public Animator animatorBigTab;
+    public GameObject 
 
     [Header ("References")]
     public TextMeshProUGUI objectiveText;

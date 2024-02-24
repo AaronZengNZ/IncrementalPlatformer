@@ -13,9 +13,11 @@ public class ScoreCounter : MonoBehaviour
     public TextMeshProUGUI scoreText;
     public TextMeshProUGUI shardText;
     public bool shardsUnlocked = false;
+    public BigNumberHandler bigNumberHandler;
     private float prefUpdateTime = 0f;
 
     void Start(){
+        bigNumberHandler = GetComponent<BigNumberHandler>();
         CheckPrefs();
     }
 
@@ -49,7 +51,7 @@ public class ScoreCounter : MonoBehaviour
 
     void Update(){
         if(shardsUnlocked){
-            shardText.text = "Shards: " + Mathf.RoundToInt(shards).ToString("n0");
+            shardText.text = "Shards: " + bigNumberHandler.ConvertToString(shards);
         }
         else{
             shardText.text = "";
@@ -59,14 +61,14 @@ public class ScoreCounter : MonoBehaviour
         if(Mathf.Round(scoreLerp) > Mathf.Round(score)){indent = "-";}
         else if(Mathf.Round(scoreLerp) < Mathf.Round(score)){indent = "+";}
         else{
-            scoreText.text = Mathf.RoundToInt(scoreLerp).ToString("n0");
+            scoreText.text = bigNumberHandler.ConvertToString(scoreLerp);
             return;
         }
         if(Mathf.Abs(score - scoreLerp) < score / 50000f / scoreLerpSpeed){
-            scoreText.text = Mathf.RoundToInt(score).ToString("n0");
+            scoreText.text = bigNumberHandler.ConvertToString(score);
             return;
         }
-        scoreText.text = Mathf.RoundToInt(scoreLerp).ToString("n0") + indent + Mathf.RoundToInt(Mathf.Abs(score - scoreLerp)).ToString("n0");
+        scoreText.text = bigNumberHandler.ConvertToString(scoreLerp) + indent + bigNumberHandler.ConvertToString(Mathf.Abs(score - scoreLerp));
     }
     
     public void UpdateScore(float amount){

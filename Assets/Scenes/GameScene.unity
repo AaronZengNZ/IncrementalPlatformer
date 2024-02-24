@@ -1744,6 +1744,7 @@ MonoBehaviour:
   effectText: {fileID: 982587171}
   animator: {fileID: 54579892}
   experienceParticle: {fileID: 3627018177272820323, guid: 1ae52cb209d2945adb32abbc8111e8c0, type: 3}
+  bigNumberHandler: {fileID: 0}
   costs:
   - 1500
   - 12000
@@ -3061,6 +3062,7 @@ MonoBehaviour:
   effectText: {fileID: 1358281469}
   animator: {fileID: 91330129}
   experienceParticle: {fileID: 3627018177272820323, guid: 1ae52cb209d2945adb32abbc8111e8c0, type: 3}
+  bigNumberHandler: {fileID: 0}
   costs:
   - 500
   currency: pebbles
@@ -4347,6 +4349,7 @@ MonoBehaviour:
   effectText: {fileID: 1037732097}
   animator: {fileID: 133538168}
   experienceParticle: {fileID: 3627018177272820323, guid: 1ae52cb209d2945adb32abbc8111e8c0, type: 3}
+  bigNumberHandler: {fileID: 0}
   costs:
   - 1000
   - 5000
@@ -6802,6 +6805,7 @@ MonoBehaviour:
   effectText: {fileID: 1459469311}
   animator: {fileID: 229659821}
   experienceParticle: {fileID: 3627018177272820323, guid: 1ae52cb209d2945adb32abbc8111e8c0, type: 3}
+  bigNumberHandler: {fileID: 0}
   costs:
   - 0
   currency: pebbles
@@ -6940,6 +6944,7 @@ MonoBehaviour:
   effectText: {fileID: 973248669}
   animator: {fileID: 230448342}
   experienceParticle: {fileID: 3627018177272820323, guid: 1ae52cb209d2945adb32abbc8111e8c0, type: 3}
+  bigNumberHandler: {fileID: 0}
   costs:
   - 5000
   - 40000
@@ -15848,7 +15853,7 @@ GameObject:
   - component: {fileID: 676889102}
   - component: {fileID: 676889103}
   m_Layer: 5
-  m_Name: SettingsTab
+  m_Name: MiscTab
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -16841,6 +16846,7 @@ MonoBehaviour:
   effectText: {fileID: 2015221922}
   animator: {fileID: 722952433}
   experienceParticle: {fileID: 3627018177272820323, guid: 1ae52cb209d2945adb32abbc8111e8c0, type: 3}
+  bigNumberHandler: {fileID: 0}
   costs:
   - 100
   - 500
@@ -32014,6 +32020,7 @@ MonoBehaviour:
   effectText: {fileID: 2060475711}
   animator: {fileID: 1011370944}
   experienceParticle: {fileID: 3627018177272820323, guid: 1ae52cb209d2945adb32abbc8111e8c0, type: 3}
+  bigNumberHandler: {fileID: 0}
   costs:
   - 1000
   currency: shards
@@ -33101,6 +33108,7 @@ MonoBehaviour:
   effectText: {fileID: 698825053}
   animator: {fileID: 1061165244}
   experienceParticle: {fileID: 3627018177272820323, guid: 1ae52cb209d2945adb32abbc8111e8c0, type: 3}
+  bigNumberHandler: {fileID: 0}
   costs:
   - 75000
   - 200000
@@ -36143,6 +36151,7 @@ MonoBehaviour:
   effectText: {fileID: 1424536492}
   animator: {fileID: 1256729288}
   experienceParticle: {fileID: 3627018177272820323, guid: 1ae52cb209d2945adb32abbc8111e8c0, type: 3}
+  bigNumberHandler: {fileID: 0}
   costs:
   - 1000
   - 10000
@@ -38320,6 +38329,7 @@ MonoBehaviour:
   effectText: {fileID: 876906447}
   animator: {fileID: 1326297502}
   experienceParticle: {fileID: 3627018177272820323, guid: 1ae52cb209d2945adb32abbc8111e8c0, type: 3}
+  bigNumberHandler: {fileID: 0}
   costs:
   - 2500
   - 7500
@@ -42863,6 +42873,7 @@ MonoBehaviour:
   effectText: {fileID: 2146072851}
   animator: {fileID: 1530440763}
   experienceParticle: {fileID: 3627018177272820323, guid: 1ae52cb209d2945adb32abbc8111e8c0, type: 3}
+  bigNumberHandler: {fileID: 0}
   costs:
   - 250
   - 750
@@ -44355,6 +44366,7 @@ MonoBehaviour:
   effectText: {fileID: 1996862303}
   animator: {fileID: 1575727721}
   experienceParticle: {fileID: 3627018177272820323, guid: 1ae52cb209d2945adb32abbc8111e8c0, type: 3}
+  bigNumberHandler: {fileID: 0}
   costs:
   - 10000000
   currency: pebbles
@@ -45644,6 +45656,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1648751055}
   - component: {fileID: 1648751056}
+  - component: {fileID: 1648751057}
   m_Layer: 0
   m_Name: ScoreCounter
   m_TagString: Untagged
@@ -45678,10 +45691,36 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4ef106b9c27c045879a019ece0f3be37, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  scoreLerpSpeed: 5
+  scoreLerpSpeed: 10
   scoreText: {fileID: 1193439542}
   shardText: {fileID: 1253905104}
   shardsUnlocked: 0
+  bigNumberHandler: {fileID: 0}
+--- !u!114 &1648751057
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1648751054}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 175203f9fa9d24cb099b06fed65626b4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  numberSuffixes:
+  - 
+  - k
+  - m
+  - b
+  - t
+  - qd
+  - qt
+  - sx
+  - sp
+  - oc
+  - n
+  - d
 --- !u!1 &1648807926
 GameObject:
   m_ObjectHideFlags: 0
@@ -46577,6 +46616,7 @@ MonoBehaviour:
   effectText: {fileID: 818594443}
   animator: {fileID: 1718157395}
   experienceParticle: {fileID: 3627018177272820323, guid: 1ae52cb209d2945adb32abbc8111e8c0, type: 3}
+  bigNumberHandler: {fileID: 0}
   costs:
   - 350
   - 1500
@@ -49301,6 +49341,7 @@ MonoBehaviour:
   effectText: {fileID: 232044437}
   animator: {fileID: 1849374031}
   experienceParticle: {fileID: 3627018177272820323, guid: 1ae52cb209d2945adb32abbc8111e8c0, type: 3}
+  bigNumberHandler: {fileID: 0}
   costs:
   - 1000
   currency: pebbles
@@ -51053,6 +51094,7 @@ MonoBehaviour:
   effectText: {fileID: 107550063}
   animator: {fileID: 1948402889}
   experienceParticle: {fileID: 3627018177272820323, guid: 1ae52cb209d2945adb32abbc8111e8c0, type: 3}
+  bigNumberHandler: {fileID: 0}
   costs:
   - 5000
   - 25000
@@ -51672,6 +51714,7 @@ MonoBehaviour:
   effectText: {fileID: 1834602506}
   animator: {fileID: 1982644662}
   experienceParticle: {fileID: 3627018177272820323, guid: 1ae52cb209d2945adb32abbc8111e8c0, type: 3}
+  bigNumberHandler: {fileID: 0}
   costs:
   - 100
   currency: shards
@@ -52931,6 +52974,7 @@ MonoBehaviour:
   effectText: {fileID: 786555901}
   animator: {fileID: 2023743347}
   experienceParticle: {fileID: 3627018177272820323, guid: 1ae52cb209d2945adb32abbc8111e8c0, type: 3}
+  bigNumberHandler: {fileID: 0}
   costs:
   - 75
   currency: pebbles
@@ -53312,6 +53356,7 @@ MonoBehaviour:
   effectText: {fileID: 2060806095}
   animator: {fileID: 2028286335}
   experienceParticle: {fileID: 3627018177272820323, guid: 1ae52cb209d2945adb32abbc8111e8c0, type: 3}
+  bigNumberHandler: {fileID: 0}
   costs:
   - 25
   - 250
@@ -53703,6 +53748,7 @@ MonoBehaviour:
   effectText: {fileID: 346813869}
   animator: {fileID: 2051813965}
   experienceParticle: {fileID: 3627018177272820323, guid: 1ae52cb209d2945adb32abbc8111e8c0, type: 3}
+  bigNumberHandler: {fileID: 0}
   costs:
   - 200
   - 0
@@ -57051,6 +57097,7 @@ MonoBehaviour:
   effectText: {fileID: 3901789717650746321}
   animator: {fileID: 5570785846814138984}
   experienceParticle: {fileID: 3627018177272820323, guid: 1ae52cb209d2945adb32abbc8111e8c0, type: 3}
+  bigNumberHandler: {fileID: 0}
   costs:
   - 10
   - 50

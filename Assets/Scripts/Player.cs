@@ -150,6 +150,10 @@ public class Player : MonoBehaviour
         previousYMagnitude = Mathf.Abs(rb.velocity.y);
     }
 
+    public void changeTrail(float number){
+        currentTrail = number;
+    }
+
     private void updateTrails(){
         for(int i = 0; i < trails.Length; i++){
             if(i == currentTrail-1f){

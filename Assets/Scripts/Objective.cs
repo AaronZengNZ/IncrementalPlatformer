@@ -19,6 +19,9 @@ public class Objective : MonoBehaviour
     public float objectiveNumberMinimum = 8f;
     public Transform objectiveLocation;
     public bool trailUnlock = false;
+    public bool isNotification = false;
+    public string notificationText = "null";
+    public Color notificationTextColor;
 
     void Start(){
         upgradeManager = GameObject.Find("UpgradeManager").GetComponent<UpgradeManager>();

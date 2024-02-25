@@ -11,15 +11,16 @@ public class NotificationScript : MonoBehaviour
     public TextMeshProUGUI notificationText;
     public TextMeshProUGUI secondaryNotificationText;
     IEnumerator Notify(){
-        notificationAnimator.SetBool("Show", true);
+        notificationAnimator.SetBool("Showing", true);
         yield return new WaitForSeconds(1f);
-        notificationAnimator.SetBool("Show", false);
+        notificationAnimator.SetBool("Showing", false);
     }
 
-    public void ShowNotification(string text, string template = "none"){
+    public void ShowNotification(string text, Color notificationTextColor, string template = "none"){
         if(template == "trail"){
             notificationTitle.text = "Trail Unlocked";
             notificationText.text = "[" + text + "] trail has been unlocked!";
+            notificationText.color = notificationTextColor;
             secondaryNotificationText.text = "Equip it by clicking on the [swap trail] button in [misc].";
         }
         StartCoroutine(Notify());

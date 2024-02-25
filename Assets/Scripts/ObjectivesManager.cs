@@ -18,6 +18,7 @@ public class ObjectivesManager : MonoBehaviour
     public GameObject[] bigTabComponents;
     public GameObject[] lockedTrailObjects;
     public Button[] trailButtons;
+    public NotificationScript notificationScript;
 
     [Header ("References")]
     public TextMeshProUGUI objectiveText;
@@ -43,9 +44,11 @@ public class ObjectivesManager : MonoBehaviour
     public float currentObjective = 1f;
     public float objectiveChangeDuration = 3f;
     public float changingObjective;
-    public float trailsUnlocked = 4f;
+    public float trailsUnlocked = 1f;
     private float currentComponent = -1f;
     private bool objectiveArrowActivated = true;
+    private string notificationText = "null";
+    private Color notificationTextColor;
     // Start is called before the first frame update
     void Start()
     {
@@ -153,6 +156,9 @@ public class ObjectivesManager : MonoBehaviour
                 changingObjective = 0f;
                 if(objectives[(int)currentObjective].trailUnlock){
                     trailsUnlocked++;
+                    if(objectives[(int)currentObjective].isNotification == true){
+                        notificationScript.ShowNotification(notificationText, notificationTextColor, "trail");
+                    }
                 }
                 currentObjective++;
             }
@@ -171,6 +177,10 @@ public class ObjectivesManager : MonoBehaviour
             objectiveProgressText.text = "Currently: [" + objectives[(int)currentObjective].currentObjectiveProgress + "/" + objectives[(int)currentObjective].objectiveNumberMaximum + "]";
         }
         objectiveText.text = objectives[(int)currentObjective].objectiveName;
+        if(objectives[(int)currentObjective].isNotification == true){
+            notificationText = objectives[(int)currentObjective].notificationText;
+            notificationTextColor = objectives[(int)currentObjective].notificationTextColor;
+        }
     }
 
     public void ToggleObjectives(float objectiveNum = 1f){

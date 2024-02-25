@@ -14,7 +14,10 @@ public class ObjectivesManager : MonoBehaviour
     public Animator animator3;
     public TextMeshProUGUI openCloseText3;
     public Animator animatorBigTab;
-    public GameObject 
+    public GameObject bigTab;
+    public GameObject[] bigTabComponents;
+    public GameObject[] lockedTrailObjects;
+    public Button[] trailButtons;
 
     [Header ("References")]
     public TextMeshProUGUI objectiveText;
@@ -27,6 +30,8 @@ public class ObjectivesManager : MonoBehaviour
     public SpriteRenderer objectiveArrowSprite;
     public float objectiveDistanceToHide = 8f;
     public float objectiveDistanceHidden = 4f;
+    public GameObject objectiveArrowSpriteObj;
+    public TextMeshProUGUI objectiveArrowToggledText;
     [Header("Variables")]
     public bool showObjectives = false;
     public bool showTab2 = false;
@@ -38,13 +43,16 @@ public class ObjectivesManager : MonoBehaviour
     public float currentObjective = 1f;
     public float objectiveChangeDuration = 3f;
     public float changingObjective;
+    public float trailsUnlocked = 4f;
+    private float currentComponent = -1f;
+    private bool objectiveArrowActivated = true;
     // Start is called before the first frame update
     void Start()
     {
         showObjectives = true;
         showTab2 = true;
         showTab3 = false;
-        showBigTab = true;
+        showBigTab = false;
         CheckPrefs();
     }
 
@@ -52,11 +60,54 @@ public class ObjectivesManager : MonoBehaviour
         animator.SetBool("Showing", showObjectives);
         animator2.SetBool("Showing", showTab2);
         animator3.SetBool("Showing", showTab3);
-        animatorBigTab.SetBool("Showing", showBigTab);
+        animatorBigTab.SetBool("Showing", true);
+        bigTab.SetActive(showBigTab);
         lerpedObjectiveProgress = Mathf.Lerp(lerpedObjectiveProgress, currentObjectiveProgress, Time.deltaTime * (1f / lerpSpeed));
+        objectiveArrowSpriteObj.SetActive(objectiveArrowActivated);
         GetObjectiveVariables();
         GetNextObjective();
         PointToObjective();
+        LockedTrails();
+    }
+
+    public void ToggleObjectiveArrow(){
+        objectiveArrowActivated = !objectiveArrowActivated;
+        if(objectiveArrowActivated){
+            objectiveArrowToggledText.text = "X";
+        }
+        else{
+            objectiveArrowToggledText.text = "";
+        }
+    }
+
+    private void LockedTrails(){
+        for(int i = 0; i < lockedTrailObjects.Length; i++){
+            if(i < trailsUnlocked){
+                lockedTrailObjects[i].SetActive(false);
+                trailButtons[i].interactable = true;
+            }
+            else{
+                lockedTrailObjects[i].SetActive(true);
+                trailButtons[i].interactable = false;
+            }
+        }
+    }
+
+    public void ActivateBigTabComponent(float component){
+        if(component == 999f){
+            showBigTab = false;
+            return;
+        }
+        if(component == currentComponent){
+            showBigTab = !showBigTab;
+        }else{
+            showBigTab = true;
+            for(int i = 0; i < bigTabComponents.Length; i++){
+                bigTabComponents[i].SetActive(false);
+            }
+            bigTabComponents[(int)component].SetActive(true);
+        }
+        currentComponent = component;
     }
     
     private void PointToObjective(){
@@ -82,10 +133,17 @@ public class ObjectivesManager : MonoBehaviour
         else{
             PlayerPrefs.SetFloat("currentObjective", 0f);
         }
+        if(PlayerPrefs.HasKey("trailsUnlocked")){
+            trailsUnlocked = PlayerPrefs.GetFloat("trailsUnlocked");
+        }
+        else{
+            PlayerPrefs.SetFloat("trailsUnlocked", 2f);
+        }
     }
 
     public void SetPrefs(){
         PlayerPrefs.SetFloat("currentObjective", currentObjective);
+        PlayerPrefs.SetFloat("trailsUnlocked", trailsUnlocked);
     }
 
     private void GetNextObjective(){
@@ -139,9 +197,6 @@ public class ObjectivesManager : MonoBehaviour
             else{
                 openCloseText3.text = "+";
             }
-        }
-        if(objectiveNum == 4f){
-            showBigTab = !showBigTab;
         }
     }
 }

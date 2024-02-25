@@ -137,7 +137,7 @@ public class ObjectivesManager : MonoBehaviour
             trailsUnlocked = PlayerPrefs.GetFloat("trailsUnlocked");
         }
         else{
-            PlayerPrefs.SetFloat("trailsUnlocked", 2f);
+            PlayerPrefs.SetFloat("trailsUnlocked", 1f);
         }
     }
 
@@ -151,6 +151,9 @@ public class ObjectivesManager : MonoBehaviour
             changingObjective += Time.deltaTime;
             if(changingObjective >= objectiveChangeDuration){
                 changingObjective = 0f;
+                if(objectives[(int)currentObjective].trailUnlock){
+                    trailsUnlocked++;
+                }
                 currentObjective++;
             }
         }

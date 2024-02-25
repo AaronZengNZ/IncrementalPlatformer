@@ -18,6 +18,7 @@ public class Objective : MonoBehaviour
     public float objectiveNumberMaximum = 11f;
     public float objectiveNumberMinimum = 8f;
     public Transform objectiveLocation;
+    public bool trailUnlock = false;
 
     void Start(){
         upgradeManager = GameObject.Find("UpgradeManager").GetComponent<UpgradeManager>();

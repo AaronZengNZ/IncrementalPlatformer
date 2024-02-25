@@ -6,9 +6,9 @@ using TMPro;
 
 public class ScoreCounter : MonoBehaviour
 {
-    public float score {get; private set;}
+    public float score;
     public float scoreLerpSpeed = 10f;
-    public float shards {get; private set;}
+    public float shards;
     private float scoreLerp = 0f;
     public TextMeshProUGUI scoreText;
     public TextMeshProUGUI shardText;

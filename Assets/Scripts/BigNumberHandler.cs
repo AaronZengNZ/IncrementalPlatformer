@@ -12,6 +12,10 @@ public class BigNumberHandler : MonoBehaviour
             index++;
         }
         number = Mathf.Round(number * 100) / 100f;
+        if(index == 0f){
+            number = Mathf.Round(number);
+            return number.ToString();
+        }
         return number.ToString() + " " + numberSuffixes[index];
     }
 }

@@ -11,6 +11,7 @@ TagManager:
   - TripleGravity
   - GreenPad
   - SetFont
+  - QuintipleGravity
   layers:
   - Default
   - TransparentFX

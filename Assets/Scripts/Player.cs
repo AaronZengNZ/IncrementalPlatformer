@@ -23,7 +23,6 @@ public class Player : MonoBehaviour
     private float jumpsLeft = 1f;
     public float xHoming = 0f;
     public float xHomingRange = 3f;
-
     [Header("Rebound Values")]
     public float xReboundForce = 0.7f;
     public float yReboundMultiplier = 0.6f;
@@ -49,6 +48,7 @@ public class Player : MonoBehaviour
     public Transform tutorialSpawn;
     public Transform normalSpawn;
     private bool gravityTripled = false;
+    private bool gravityQuintupled = false;
     private bool grounded = false;
     private bool rebounding = false;
     private bool colliding = false;
@@ -255,12 +255,22 @@ public class Player : MonoBehaviour
                 gravityTripled = true;
             }
         }
+        if(other.gameObject.tag == "QuintipleGravity"){
+            if(!gravityQuintupled){
+                gravityQuintupled = true;
+            }
+        }
     }
     
     private void OnTriggerExit2D(Collider2D other) {
         if(other.gameObject.tag == "TripleGravity"){
             if(gravityTripled){
                 gravityTripled = false;
+            }
+        }
+        if(other.gameObject.tag == "QuintipleGravity"){
+            if(gravityQuintupled){
+                gravityQuintupled = false;
             }
         }
         if(other.gameObject.tag == "GreenPad"){
@@ -345,13 +355,20 @@ public class Player : MonoBehaviour
     }
 
     private void RegisterJump(){
-        rb.velocity = new Vector2(rb.velocity.x, jumpHeight);
+        float tempJumpHeight = jumpHeight;
+        if(gravityQuintupled){
+            tempJumpHeight /= 2f;
+        }
+        else if(gravityTripled){
+            tempJumpHeight /= 1.25f;
+        }
+        rb.velocity = new Vector2(rb.velocity.x, tempJumpHeight);
         jumpsLeft--;
     }
 
     private void AccelerateDown(){
-        if(gravityTripled){
-            rb.velocity += Vector2.up * Physics2D.gravity.y * (15f) * Time.deltaTime;
+        if(gravityTripled || gravityQuintupled){
+            rb.velocity += Vector2.up * Physics2D.gravity.y * (7.5f) * Time.deltaTime;
         }
         else if(rb.velocity.y < 0 || !Input.GetButton("Jump") && !autoJumpsToggled || rebounding || !tutorialCompleted){
             rb.velocity += Vector2.up * Physics2D.gravity.y * (2.5f*gravityPower) * Time.deltaTime;

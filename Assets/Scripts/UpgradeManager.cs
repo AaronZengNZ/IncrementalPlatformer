@@ -16,6 +16,8 @@ public class UpgradeManager : MonoBehaviour
     public bool greenPadActive = false;
     public GameObject door1;
     public bool door1Active = true;
+    public GameObject door2;
+    public bool door2Active = true;
     public ScoreCounter scoreCounter;
     public TextMeshProUGUI savingText;
     public GameObject playerClone;
@@ -36,6 +38,7 @@ public class UpgradeManager : MonoBehaviour
     void Update(){
         redPad.SetActive(redPadActive);
         door1.SetActive(door1Active);
+        door2.SetActive(door2Active);
         greenPad.SetActive(greenPadActive);
         if(playerClonesInstantiated < playerClones){
             InstantiatePlayerClone();
@@ -88,6 +91,13 @@ public class UpgradeManager : MonoBehaviour
             PlayerPrefs.SetInt("door1", Convert.ToInt32(true));
             door1Active = true;
         }
+        if(PlayerPrefs.HasKey("door2")){
+            door2Active = Convert.ToBoolean(PlayerPrefs.GetInt("door2Active"));
+        }
+        else{
+            PlayerPrefs.SetInt("door2", Convert.ToInt32(true));
+            door2Active = true;
+        }
         if(PlayerPrefs.HasKey("playerClones")){
             playerClones = PlayerPrefs.GetInt("playerClones");
         }
@@ -116,6 +126,12 @@ public class UpgradeManager : MonoBehaviour
         }
         else{
             PlayerPrefs.SetInt("door1Active", Convert.ToInt32(false));
+        }
+        if(door2Active){
+            PlayerPrefs.SetInt("door2Active", Convert.ToInt32(true));
+        }
+        else{
+            PlayerPrefs.SetInt("door2Active", Convert.ToInt32(false));
         }
         if(greenPadActive){
             PlayerPrefs.SetInt("greenPadActive", Convert.ToInt32(true));
@@ -213,6 +229,9 @@ public class UpgradeManager : MonoBehaviour
             case "unlockDoor1":
                 door1Active = false;
                 break;
+            case "unlockDoor2":
+                door2Active = false;
+                break;
             case "playerClones":
                 playerClones += (int)amount;
                 InstantiatePlayerClone();
@@ -263,6 +282,8 @@ public class UpgradeManager : MonoBehaviour
                 return turnToInt(redPadActive);
             case "unlockDoor1":
                 return turnToInt(door1Active, true);
+            case "unlockDoor2":
+                return turnToInt(door2Active, true);
             case "playerClones":
                 return playerClones;
             case "redBoostValue":

@@ -12,6 +12,7 @@ public class Player : MonoBehaviour
     public TextMeshProUGUI autoJumpsLeftText;
     public TextMeshProUGUI autoJumpsToggledUIText;
     public TextMeshProUGUI autoJumpsLeftUIText;
+    public TextMeshProUGUI altitudeText;
     public ParticleSystem redBoostEffect;
     public ParticleSystem greenBoostEffect;
     public TrailRenderer[] trails;
@@ -23,6 +24,11 @@ public class Player : MonoBehaviour
     private float jumpsLeft = 1f;
     public float xHoming = 0f;
     public float xHomingRange = 3f;
+    public bool dashUnlocked = false;
+    public float dashSpeed = 10f;
+    public float dashDuration = 0.5f;
+    public bool dashing = false;
+    public bool dashAvailable = false;
     [Header("Rebound Values")]
     public float xReboundForce = 0.7f;
     public float yReboundMultiplier = 0.6f;
@@ -33,6 +39,7 @@ public class Player : MonoBehaviour
     public float smashPower = 1f;
     public float gravityPower = 1f;
     public float currentTrail = 1f;
+    public float minimumAltitude = 1f;
     [Header("Auto Jumps")]
     public float maxAutoJumps = 0f;
     public float autoJumpRegenSpeed = 5f;
@@ -146,8 +153,15 @@ public class Player : MonoBehaviour
         boostCalculations();
         upgradeRebound();
         updateTrails();
+        Dashing();
+        updateAltitdueText();
         previousVelocity = rb.velocity;
         previousYMagnitude = Mathf.Abs(rb.velocity.y);
+
+    }
+
+    private void updateAltitdueText(){
+        altitudeText.text = "Altitude: " + (Mathf.Round(transform.position.y) - minimumAltitude) + " units";
     }
 
     public void changeTrail(float number){
@@ -317,6 +331,7 @@ public class Player : MonoBehaviour
 
     private void Movement(){
         if(rebounding && !grounded){return;}
+        if(dashing){return;}
         float x = Input.GetAxis("Horizontal");
         if(!Input.GetButton("InputRight") && !Input.GetButton("InputLeft")){
             x = Input.GetAxis("Horizontal") / 3f;
@@ -337,6 +352,28 @@ public class Player : MonoBehaviour
         }
         else if(rb.angularVelocity < -rotationalMovementCap){
             rb.angularVelocity = -rotationalMovementCap;
+        }
+    }
+
+    private void Dashing(){
+        if(grounded && !dashing){
+            dashAvailable = true;
+        }
+        if(dashAvailable && Input.GetKeyDown("space") && !rebounding && !dashing){
+            //get horizontal and vertical input
+            float x = Input.GetAxis("Horizontal");
+            float y = Input.GetAxis("Vertical");
+            rb.velocity = new Vector2(x * dashSpeed, y * dashSpeed*1.2f);
+            dashAvailable = false;
+            dashing = true;
+            StartCoroutine(DashTimer());
+        }
+    }
+
+    IEnumerator DashTimer(){
+        if(dashing == true){
+            yield return new WaitForSeconds(dashDuration);
+            dashing = false;
         }
     }
 

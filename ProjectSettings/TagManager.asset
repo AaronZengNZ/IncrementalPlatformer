@@ -12,6 +12,7 @@ TagManager:
   - GreenPad
   - SetFont
   - QuintipleGravity
+  - PlayerClone
   layers:
   - Default
   - TransparentFX

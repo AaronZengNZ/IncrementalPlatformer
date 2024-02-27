@@ -232,6 +232,8 @@ MonoBehaviour:
   smashPower: 1
   gravityPower: 1
   autoJumpsLeft: 0
+  greenPadPower: 2
+  touchingGreenPad: 0
   autoJumpsToggled: 0
 --- !u!1 &4569198341330728120
 GameObject:
@@ -325,6 +327,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   colliding: 0
+  afterJumps: 0
+  afterJumpTimerMax: 0.2
 --- !u!50 &36871296851750988
 Rigidbody2D:
   serializedVersion: 4
@@ -363,7 +367,7 @@ GameObject:
   - component: {fileID: 9176942368584888931}
   m_Layer: 7
   m_Name: PlayerCloneHolder
-  m_TagString: Untagged
+  m_TagString: PlayerClone
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0

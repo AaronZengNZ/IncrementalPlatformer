@@ -132,6 +132,12 @@ public class Player : MonoBehaviour
         else{
             PlayerPrefs.SetInt("tutorialCompleted", 0);
         }
+        if(PlayerPrefs.HasKey("dashUnlocked")){
+            dashUnlocked = PlayerPrefs.GetInt("dashUnlocked") == 1;
+        }
+        else{
+            PlayerPrefs.SetInt("dashUnlocked", 0);
+        }
     }
     public void UpdatePrefs(){
         PlayerPrefs.SetFloat("playerJumpHeight", jumpHeight);
@@ -141,6 +147,7 @@ public class Player : MonoBehaviour
         PlayerPrefs.SetFloat("playerAutoJumps", maxAutoJumps);
         PlayerPrefs.SetFloat("redBoostValue", redBoostValue);
         PlayerPrefs.SetFloat("greenBoostValue", greenPadPower);
+        PlayerPrefs.SetInt("dashUnlocked", dashUnlocked ? 1 : 0);
         PlayerPrefs.SetInt("tutorialCompleted", tutorialCompleted ? 1 : 0);
     }
     void Update()
@@ -356,6 +363,7 @@ public class Player : MonoBehaviour
     }
 
     private void Dashing(){
+        if(!dashUnlocked){return;}
         if(grounded && !dashing){
             dashAvailable = true;
         }

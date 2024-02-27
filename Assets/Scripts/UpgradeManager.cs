@@ -18,6 +18,8 @@ public class UpgradeManager : MonoBehaviour
     public bool door1Active = true;
     public GameObject door2;
     public bool door2Active = true;
+    public GameObject stairs;
+    public bool stairsActive = false;
     public ScoreCounter scoreCounter;
     public TextMeshProUGUI savingText;
     public GameObject playerClone;
@@ -40,6 +42,7 @@ public class UpgradeManager : MonoBehaviour
         door1.SetActive(door1Active);
         door2.SetActive(door2Active);
         greenPad.SetActive(greenPadActive);
+        stairs.SetActive(stairsActive);
         if(playerClonesInstantiated < playerClones){
             InstantiatePlayerClone();
         }
@@ -112,6 +115,13 @@ public class UpgradeManager : MonoBehaviour
             PlayerPrefs.SetInt("greenPad", Convert.ToInt32(false));
             greenPadActive = false;
         }
+        if(PlayerPrefs.HasKey("stairsActive")){
+            stairsActive = Convert.ToBoolean(PlayerPrefs.GetInt("stairsActive"));
+        }
+        else{
+            PlayerPrefs.SetInt("stairsActive", Convert.ToInt32(false));
+            stairsActive = false;
+        }
     }
 
     private void UpdateThisPrefs(){
@@ -138,6 +148,12 @@ public class UpgradeManager : MonoBehaviour
         }
         else{
             PlayerPrefs.SetInt("greenPadActive", Convert.ToInt32(false));
+        }
+        if(stairsActive){
+            PlayerPrefs.SetInt("stairsActive", Convert.ToInt32(true));
+        }
+        else{
+            PlayerPrefs.SetInt("stairsActive", Convert.ToInt32(false));
         }
         PlayerPrefs.SetInt("playerClones", playerClones);
         UnityEngine.Debug.Log("Updated redPad: " + Convert.ToBoolean(PlayerPrefs.GetInt("redPadActive")));
@@ -195,6 +211,10 @@ public class UpgradeManager : MonoBehaviour
     {
         switch (stat)
         {
+            case "completeTutorial":
+                PlayerPrefs.SetInt("tutorialCompleted", 1);
+                player.tutorialCompleted = true;
+                break;
             case "rockStage":
                 rock.rockStage += amount;
                 break;
@@ -248,9 +268,11 @@ public class UpgradeManager : MonoBehaviour
             case "greenBoostValue":
                 player.greenPadPower += amount;
                 break;
-            case "completeTutorial":
-                PlayerPrefs.SetInt("tutorialCompleted", 1);
-                player.tutorialCompleted = true;
+            case "activateStairs":
+                stairsActive = true;
+                break;
+            case "unlockDash":
+                player.dashUnlocked = true;
                 break;
         }
     }
@@ -296,6 +318,10 @@ public class UpgradeManager : MonoBehaviour
                 return player.greenPadPower;
             case "completeTutorial":
                 return turnToInt(player.tutorialCompleted);
+            case "activateStairs":
+                return turnToInt(stairsActive);
+            case "unlockDash":
+                return turnToInt(player.dashUnlocked);
         }
         return 0;
     }

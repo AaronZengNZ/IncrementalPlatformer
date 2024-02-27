@@ -110,7 +110,11 @@ public class PlayerClone : MonoBehaviour
         if(touchingGreenPad){
             boostTotal *= greenPadPower;
         }
-        other.GetComponent<Rock>().Collision(this.gameObject, previousYMagnitude, smashPower, boostTotal, 0.5f);
+        float screenShakeMagnitude = 0.5f;
+        GameObject[] clones = GameObject.FindGameObjectsWithTag("PlayerClone");
+        float amountOfClones = clones.Length;
+        screenShakeMagnitude = 0.7f / (0.8f + (amountOfClones * 0.2f));
+        other.GetComponent<Rock>().Collision(this.gameObject, previousYMagnitude, smashPower, boostTotal, screenShakeMagnitude);
     }
 
     private void CollisionRebound(Transform other){

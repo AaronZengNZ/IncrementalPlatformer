@@ -110,7 +110,7 @@ public class Buyable : MonoBehaviour
     }
 
     IEnumerator Cooldown(){
-        yield return new WaitForSeconds(0.5f);
+        yield return new WaitForSeconds(0.3f);
         buyCooldown = false;
     } 
 }

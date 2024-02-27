@@ -361,9 +361,6 @@ public class Player : MonoBehaviour
         }
         if(dashAvailable && Input.GetKeyDown("space") && !rebounding && !dashing){
             //get horizontal and vertical input
-            float x = Input.GetAxis("Horizontal");
-            float y = Input.GetAxis("Vertical");
-            rb.velocity = new Vector2(x * dashSpeed, y * dashSpeed*1.2f);
             dashAvailable = false;
             dashing = true;
             StartCoroutine(DashTimer());
@@ -372,7 +369,20 @@ public class Player : MonoBehaviour
 
     IEnumerator DashTimer(){
         if(dashing == true){
-            yield return new WaitForSeconds(dashDuration);
+            float dashTime = dashDuration;
+            while(dashTime > 0){
+                float x = Input.GetAxis("Horizontal");
+                float y = Input.GetAxis("Vertical");
+                rb.velocity = new Vector2(x * dashSpeed*1.25f, y * dashSpeed);
+                dashTime -= Time.deltaTime;
+                //apply a LOT of spin in the correct direction 
+                float direction = 1f;
+                if(x < 0f){
+                    direction = -1f;
+                }
+                rb.angularVelocity = direction * 6000f;
+                yield return null;
+            }
             dashing = false;
         }
     }

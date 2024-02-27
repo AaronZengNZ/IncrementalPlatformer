@@ -15,6 +15,7 @@ public class Player : MonoBehaviour
     public TextMeshProUGUI altitudeText;
     public ParticleSystem redBoostEffect;
     public ParticleSystem greenBoostEffect;
+    public ParticleSystem blueBoostEffect;
     public TrailRenderer[] trails;
 
     [Header("Movement")]
@@ -48,8 +49,12 @@ public class Player : MonoBehaviour
     [Header("Pads")]
     public float redBoostTimeLeft = 0f;
     public float redBoostValue = 5f;
+    public float redPadDuration = 5f;
     public bool touchingGreenPad = false;
     public float greenPadPower = 2f;
+    public float bluePadTimeLeft = 0f;
+    public float bluePadDuration = 60f;
+    public float bluePadPower = 0.1f;
     [Header("Tutorial Variables")]
     public bool tutorialCompleted = false;
     public Transform tutorialSpawn;
@@ -138,6 +143,12 @@ public class Player : MonoBehaviour
         else{
             PlayerPrefs.SetInt("dashUnlocked", 0);
         }
+        if(PlayerPrefs.HasKey("bluePadPower")){
+            bluePadPower = PlayerPrefs.GetFloat("bluePadPower");
+        }
+        else{
+            PlayerPrefs.SetFloat("bluePadPower", bluePadPower);
+        }
     }
     public void UpdatePrefs(){
         PlayerPrefs.SetFloat("playerJumpHeight", jumpHeight);
@@ -147,6 +158,7 @@ public class Player : MonoBehaviour
         PlayerPrefs.SetFloat("playerAutoJumps", maxAutoJumps);
         PlayerPrefs.SetFloat("redBoostValue", redBoostValue);
         PlayerPrefs.SetFloat("greenBoostValue", greenPadPower);
+        PlayerPrefs.SetFloat("bluePadPower", bluePadPower);
         PlayerPrefs.SetInt("dashUnlocked", dashUnlocked ? 1 : 0);
         PlayerPrefs.SetInt("tutorialCompleted", tutorialCompleted ? 1 : 0);
     }
@@ -166,7 +178,6 @@ public class Player : MonoBehaviour
         previousYMagnitude = Mathf.Abs(rb.velocity.y);
 
     }
-
     private void updateAltitdueText(){
         altitudeText.text = "Altitude: " + (Mathf.Round(transform.position.y) - minimumAltitude) + " units";
     }
@@ -208,6 +219,13 @@ public class Player : MonoBehaviour
         else{
             redBoostTimeLeft = 0f;
             redBoostEffect.enableEmission = false;
+        }
+        if(bluePadTimeLeft > 0f){
+            bluePadTimeLeft -= Time.deltaTime;
+            blueBoostEffect.enableEmission = true;
+        }
+        else{
+            blueBoostEffect.enableEmission = false;
         }
         greenBoostEffect.enableEmission = touchingGreenPad;
     }
@@ -266,10 +284,13 @@ public class Player : MonoBehaviour
             }
         }
         if(other.gameObject.tag == "RedPad"){
-            redBoostTimeLeft = 5f;
+            redBoostTimeLeft = redPadDuration;
         }
         if(other.gameObject.tag == "GreenPad"){
             touchingGreenPad = true;
+        }
+        if(other.gameObject.tag == "BluePad"){
+            bluePadTimeLeft = bluePadDuration;
         }
         if(other.gameObject.tag == "TripleGravity"){
             if(!gravityTripled){
@@ -309,6 +330,9 @@ public class Player : MonoBehaviour
         float boostTotal = 1f;
         if(redBoostTimeLeft > 0f){
             boostTotal *= redBoostValue;
+            if(bluePadTimeLeft > 0f){
+                boostTotal *= 1f + (greenPadPower*bluePadPower);
+            }
         }
         other.GetComponent<Rock>().Collision(this.gameObject, previousYMagnitude, smashPower, boostTotal);
     }

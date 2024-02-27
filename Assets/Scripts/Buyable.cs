@@ -74,8 +74,8 @@ public class Buyable : MonoBehaviour
         }
         else if(showSuffix){
             effectText.text = "Effect: " + effectStringPrefix + " [" + effectStringSuffixPrefix
-                 + bigNumberHandler.ConvertToString(upgradeManager.GetValue(upgradeType)) + "->" + effectStringSuffixPrefix + 
-                 bigNumberHandler.ConvertToString((upgradeManager.GetValue(upgradeType) + amounts[level-1])) + "]";
+                 + bigNumberHandler.ConvertToString(upgradeManager.GetValue(upgradeType), 10) + "->" + effectStringSuffixPrefix + 
+                 bigNumberHandler.ConvertToString((upgradeManager.GetValue(upgradeType) + amounts[level-1]), 10) + "]";
         }
         else{
             effectText.text = "Effect: " + effectStringPrefix;

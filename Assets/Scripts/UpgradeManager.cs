@@ -14,6 +14,8 @@ public class UpgradeManager : MonoBehaviour
     public bool redPadActive = false;
     public GameObject greenPad;
     public bool greenPadActive = false;
+    public GameObject bluePad;
+    public bool bluePadActive = false;
     public GameObject door1;
     public bool door1Active = true;
     public GameObject door2;
@@ -42,6 +44,7 @@ public class UpgradeManager : MonoBehaviour
         door1.SetActive(door1Active);
         door2.SetActive(door2Active);
         greenPad.SetActive(greenPadActive);
+        bluePad.SetActive(bluePadActive);
         stairs.SetActive(stairsActive);
         if(playerClonesInstantiated < playerClones){
             InstantiatePlayerClone();
@@ -115,6 +118,13 @@ public class UpgradeManager : MonoBehaviour
             PlayerPrefs.SetInt("greenPad", Convert.ToInt32(false));
             greenPadActive = false;
         }
+        if(PlayerPrefs.HasKey("bluePad")){
+            bluePadActive = Convert.ToBoolean(PlayerPrefs.GetInt("bluePadActive"));
+        }
+        else{
+            PlayerPrefs.SetInt("bluePad", Convert.ToInt32(false));
+            bluePadActive = false;
+        }
         if(PlayerPrefs.HasKey("stairsActive")){
             stairsActive = Convert.ToBoolean(PlayerPrefs.GetInt("stairsActive"));
         }
@@ -148,6 +158,12 @@ public class UpgradeManager : MonoBehaviour
         }
         else{
             PlayerPrefs.SetInt("greenPadActive", Convert.ToInt32(false));
+        }
+        if(bluePadActive){
+            PlayerPrefs.SetInt("bluePadActive", Convert.ToInt32(true));
+        }
+        else{
+            PlayerPrefs.SetInt("bluePadActive", Convert.ToInt32(false));
         }
         if(stairsActive){
             PlayerPrefs.SetInt("stairsActive", Convert.ToInt32(true));
@@ -274,6 +290,12 @@ public class UpgradeManager : MonoBehaviour
             case "unlockDash":
                 player.dashUnlocked = true;
                 break;
+            case "bluePad":
+                bluePadActive = true;
+                break;
+            case "bluePadPower":
+                player.bluePadPower += amount;
+                break;
         }
     }
 
@@ -322,6 +344,10 @@ public class UpgradeManager : MonoBehaviour
                 return turnToInt(stairsActive);
             case "unlockDash":
                 return turnToInt(player.dashUnlocked);
+            case "bluePad":
+                return turnToInt(bluePadActive);
+            case "bluePadPower":
+                return player.bluePadPower;
         }
         return 0;
     }

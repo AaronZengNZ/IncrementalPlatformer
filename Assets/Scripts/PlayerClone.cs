@@ -24,7 +24,10 @@ public class PlayerClone : MonoBehaviour
     public float gravityPower = 1f;
     public float autoJumpsLeft = 0f;
     public float greenPadPower = 2f;
+    public float redPadPower = 5f;
+    public float bluePadPower = 0.1f;
     public bool touchingGreenPad = false;
+    public float doubleMultiTime = 0f;
     public bool autoJumpsToggled = false;
     private bool grounded = false;
     private bool rebounding = false;
@@ -59,6 +62,9 @@ public class PlayerClone : MonoBehaviour
         autoJumpsLeft = player.autoJumpsLeft;
         greenPadPower = player.greenPadPower;
         touchingGreenPad = player.touchingGreenPad;
+        redPadPower = player.redBoostValue;
+        doubleMultiTime = player.bluePadTimeLeft;
+        bluePadPower = player.bluePadPower;
     }
 
     // Update is called once per frame
@@ -109,6 +115,9 @@ public class PlayerClone : MonoBehaviour
         float boostTotal = 1f;
         if(touchingGreenPad){
             boostTotal *= greenPadPower;
+            if(doubleMultiTime > 0f){
+                boostTotal *= 1f + (redPadPower * bluePadPower);
+            }
         }
         float screenShakeMagnitude = 0.5f;
         GameObject[] clones = GameObject.FindGameObjectsWithTag("PlayerClone");

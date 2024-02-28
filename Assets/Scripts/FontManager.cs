@@ -42,8 +42,14 @@ public class FontManager : MonoBehaviour
             if(text.tag == "SetFont"){
                 continue;
             }
-            //make every font's font style's uppercase be true
+            // [[[[[[[[[[IMPORTANT!!! DO NOW!!!!!!!!!!!!!! ONLY WITH BOLDTEXT TAG!!!!!!!]]]]]]]]]]
+            //make every font's font style's uppercase be true and also make them bold
+            if(text.tag == "BoldText"){
+                text.font = currentFont;
+                return;
+            }
             text.fontStyle = FontStyles.UpperCase;
+
             text.font = currentFont;
         }
     }

@@ -14,6 +14,7 @@ TagManager:
   - QuintipleGravity
   - PlayerClone
   - BluePad
+  - BoldText
   layers:
   - Default
   - TransparentFX

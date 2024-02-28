@@ -296,6 +296,12 @@ public class UpgradeManager : MonoBehaviour
             case "bluePadPower":
                 player.bluePadPower += amount;
                 break;
+            case "bluePadDuration":
+                player.bluePadDuration += amount;
+                break;
+            case "saveAutojump":
+                player.chanceToNotUseAutojump += amount;
+                break;
         }
     }
 
@@ -348,6 +354,10 @@ public class UpgradeManager : MonoBehaviour
                 return turnToInt(bluePadActive);
             case "bluePadPower":
                 return player.bluePadPower;
+            case "bluePadDuration":
+                return player.bluePadDuration;
+            case "saveAutojump":
+                return player.chanceToNotUseAutojump;
         }
         return 0;
     }

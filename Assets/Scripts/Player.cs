@@ -41,6 +41,7 @@ public class Player : MonoBehaviour
     public float gravityPower = 1f;
     public float currentTrail = 1f;
     public float minimumAltitude = 1f;
+    public float chanceToNotUseAutojump = 0f;
     [Header("Auto Jumps")]
     public float maxAutoJumps = 0f;
     public float autoJumpRegenSpeed = 5f;
@@ -149,6 +150,18 @@ public class Player : MonoBehaviour
         else{
             PlayerPrefs.SetFloat("bluePadPower", bluePadPower);
         }
+        if(PlayerPrefs.HasKey("bluePadDuration")){
+            bluePadDuration = PlayerPrefs.GetFloat("bluePadDuration");
+        }
+        else{
+            PlayerPrefs.SetFloat("bluePadDuration", bluePadDuration);
+        }
+        if(PlayerPrefs.HasKey("chanceToNotUseAutojump")){
+            chanceToNotUseAutojump = PlayerPrefs.GetFloat("chanceToNotUseAutojump");
+        }
+        else{
+            PlayerPrefs.SetFloat("chanceToNotUseAutojump", chanceToNotUseAutojump);
+        }
     }
     public void UpdatePrefs(){
         PlayerPrefs.SetFloat("playerJumpHeight", jumpHeight);
@@ -159,6 +172,8 @@ public class Player : MonoBehaviour
         PlayerPrefs.SetFloat("redBoostValue", redBoostValue);
         PlayerPrefs.SetFloat("greenBoostValue", greenPadPower);
         PlayerPrefs.SetFloat("bluePadPower", bluePadPower);
+        PlayerPrefs.SetFloat("bluePadDuration", bluePadDuration);
+        PlayerPrefs.SetFloat("chanceToNotUseAutojump", chanceToNotUseAutojump);
         PlayerPrefs.SetInt("dashUnlocked", dashUnlocked ? 1 : 0);
         PlayerPrefs.SetInt("tutorialCompleted", tutorialCompleted ? 1 : 0);
     }

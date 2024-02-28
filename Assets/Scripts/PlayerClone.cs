@@ -29,10 +29,10 @@ public class PlayerClone : MonoBehaviour
     public bool touchingGreenPad = false;
     public float doubleMultiTime = 0f;
     public bool autoJumpsToggled = false;
+    public float chanceToNotUseAutojump = 0f;
     private bool grounded = false;
     private bool rebounding = false;
     private bool colliding = false;
-
     private Vector2 previousVelocity = new Vector2(0, 0);
     private float previousYMagnitude = 0;
 
@@ -65,6 +65,7 @@ public class PlayerClone : MonoBehaviour
         redPadPower = player.redBoostValue;
         doubleMultiTime = player.bluePadTimeLeft;
         bluePadPower = player.bluePadPower;
+        chanceToNotUseAutojump = player.chanceToNotUseAutojump;
     }
 
     // Update is called once per frame
@@ -95,7 +96,9 @@ public class PlayerClone : MonoBehaviour
             colliding = false;
         }
         if(other.gameObject.tag == "Ground"){
-            player.useAutoJump();
+            if(Random.Range(0f, 1f) >= chanceToNotUseAutojump){
+                player.useAutoJump();
+            }
         }
     }
 
@@ -112,16 +115,16 @@ public class PlayerClone : MonoBehaviour
 
     private void CallCollision(GameObject other){
         if(colliding){return;}
+        GameObject[] clones = GameObject.FindGameObjectsWithTag("PlayerClone");
+        float amountOfClones = clones.Length;
         float boostTotal = 1f;
         if(touchingGreenPad){
             boostTotal *= greenPadPower;
             if(doubleMultiTime > 0f){
-                boostTotal *= 1f + (redPadPower * bluePadPower);
+                boostTotal *= 1f + (redPadPower * bluePadPower * (1f / (amountOfClones/2f + 1f)));
             }
         }
         float screenShakeMagnitude = 0.5f;
-        GameObject[] clones = GameObject.FindGameObjectsWithTag("PlayerClone");
-        float amountOfClones = clones.Length;
         screenShakeMagnitude = 0.7f / (0.8f + (amountOfClones * 0.2f));
         other.GetComponent<Rock>().Collision(this.gameObject, previousYMagnitude, smashPower, boostTotal, screenShakeMagnitude);
     }

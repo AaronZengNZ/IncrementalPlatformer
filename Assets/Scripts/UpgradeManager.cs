@@ -302,6 +302,9 @@ public class UpgradeManager : MonoBehaviour
             case "saveAutojump":
                 player.chanceToNotUseAutojump += amount;
                 break;
+            case "redPadDuration":
+                player.redPadDuration += amount;
+                break;
         }
     }
 
@@ -358,6 +361,8 @@ public class UpgradeManager : MonoBehaviour
                 return player.bluePadDuration;
             case "saveAutojump":
                 return player.chanceToNotUseAutojump;
+            case "redPadDuration":
+                return player.redPadDuration;
         }
         return 0;
     }

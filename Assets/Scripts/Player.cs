@@ -13,6 +13,9 @@ public class Player : MonoBehaviour
     public TextMeshProUGUI autoJumpsToggledUIText;
     public TextMeshProUGUI autoJumpsLeftUIText;
     public TextMeshProUGUI altitudeText;
+    public TextMeshProUGUI redPadTimeLeftText;
+    public TextMeshProUGUI greenPadTimeLeftText;
+    public TextMeshProUGUI bluePadTimeLeftText;
     public ParticleSystem redBoostEffect;
     public ParticleSystem greenBoostEffect;
     public ParticleSystem blueBoostEffect;
@@ -126,6 +129,12 @@ public class Player : MonoBehaviour
         else{
             PlayerPrefs.SetFloat("redBoostValue", redBoostValue);
         }
+        if(PlayerPrefs.HasKey("redPadDuration")){
+            redPadDuration = PlayerPrefs.GetFloat("redPadDuration");
+        }
+        else{
+            PlayerPrefs.SetFloat("redPadDuration", redPadDuration);
+        }
         if(PlayerPrefs.HasKey("greenBoostValue")){
             greenPadPower = PlayerPrefs.GetFloat("greenBoostValue");
         }
@@ -174,6 +183,7 @@ public class Player : MonoBehaviour
         PlayerPrefs.SetFloat("bluePadPower", bluePadPower);
         PlayerPrefs.SetFloat("bluePadDuration", bluePadDuration);
         PlayerPrefs.SetFloat("chanceToNotUseAutojump", chanceToNotUseAutojump);
+        PlayerPrefs.SetFloat("redPadDuration", redPadDuration);
         PlayerPrefs.SetInt("dashUnlocked", dashUnlocked ? 1 : 0);
         PlayerPrefs.SetInt("tutorialCompleted", tutorialCompleted ? 1 : 0);
     }
@@ -188,12 +198,40 @@ public class Player : MonoBehaviour
         upgradeRebound();
         updateTrails();
         Dashing();
-        updateAltitdueText();
+        updateAltitudeText();
+        updatePadTimeLeftTexts();
         previousVelocity = rb.velocity;
         previousYMagnitude = Mathf.Abs(rb.velocity.y);
 
     }
-    private void updateAltitdueText(){
+
+    private void updatePadTimeLeftTexts(){
+        if(redBoostTimeLeft > 0f){
+            redPadTimeLeftText.gameObject.SetActive(true);
+            redPadTimeLeftText.text = "Red Pad: " + (Mathf.Round(redBoostTimeLeft*100)/100f).ToString("F2") + " s";
+        }
+        else{
+            redPadTimeLeftText.text = "";
+            redPadTimeLeftText.gameObject.SetActive(false);
+        }
+        if(bluePadTimeLeft > 0f){
+            bluePadTimeLeftText.gameObject.SetActive(true);
+            bluePadTimeLeftText.text = "Blue Pad: " + (Mathf.Round(bluePadTimeLeft*100)/100f).ToString("F2") + " s";
+        }
+        else{
+            bluePadTimeLeftText.text = "";
+            bluePadTimeLeftText.gameObject.SetActive(false);
+        }
+        if(touchingGreenPad){
+            greenPadTimeLeftText.gameObject.SetActive(true);
+            greenPadTimeLeftText.text = "Green Pad: Active";
+        }
+        else{
+            greenPadTimeLeftText.text = "";
+            greenPadTimeLeftText.gameObject.SetActive(false);
+        }
+    }
+    private void updateAltitudeText(){
         altitudeText.text = "Altitude: " + (Mathf.Round(transform.position.y) - minimumAltitude) + " units";
     }
 

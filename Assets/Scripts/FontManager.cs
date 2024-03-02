@@ -46,7 +46,7 @@ public class FontManager : MonoBehaviour
             //make every font's font style's uppercase be true and also make them bold
             if(text.tag == "BoldText"){
                 text.font = currentFont;
-                return;
+                continue;
             }
             text.fontStyle = FontStyles.UpperCase;
 

@@ -8563,3 +8563,110 @@ AssetImportParameters requested are different than current active one (requested
   custom:video-encoder-webm-vp8: eb34c28f22e8b96e1ab97ce403110664 -> 
   custom:audio-decoder-ogg-vorbis: bf7c407c2cedff20999df2af8eb42d56 -> 
   custom:audio-encoder-webm-vorbis: bf7c407c2cedff20999df2af8eb42d56 -> 
+========================================================================
+Received Prepare
+Begin MonoManager ReloadAssembly
+Thread 0x16b92f000 may have been prematurely finalized
+- Loaded All Assemblies, in  0.521 seconds
+Refreshing native plugins compatible for Editor in 2.12 ms, found 3 plugins.
+Native extension for WindowsStandalone target not found
+Native extension for OSXStandalone target not found
+Native extension for WebGL target not found
+[Package Manager] Server::EnsureServerProcessIsRunning -- launch failed, reason: Unity was launched with the -noUpm command-line argument
+[Package Manager] UpmClient::Send -- Unable to send message (not connected to UPM process).
+[Package Manager] Cannot connect to Unity Package Manager local server
+Mono: successfully reloaded assembly
+- Finished resetting the current domain, in  0.827 seconds
+Domain Reload Profiling: 1348ms
+	BeginReloadAssembly (216ms)
+		ExecutionOrderSort (0ms)
+		DisableScriptedObjects (11ms)
+		BackupInstance (0ms)
+		ReleaseScriptingObjects (0ms)
+		CreateAndSetChildDomain (95ms)
+	RebuildCommonClasses (36ms)
+	RebuildNativeTypeToScriptingClass (9ms)
+	initialDomainReloadingComplete (17ms)
+	LoadAllAssembliesAndSetupDomain (243ms)
+		LoadAssemblies (297ms)
+		RebuildTransferFunctionScriptingTraits (0ms)
+		AnalyzeDomain (27ms)
+			TypeCache.Refresh (21ms)
+				TypeCache.ScanAssembly (0ms)
+			ScanForSourceGeneratedMonoScriptInfo (0ms)
+			ResolveRequiredComponents (5ms)
+	FinalizeReload (827ms)
+		ReleaseScriptCaches (0ms)
+		RebuildScriptCaches (0ms)
+		SetupLoadedEditorAssemblies (273ms)
+			LogAssemblyErrors (0ms)
+			InitializePlatformSupportModulesInManaged (4ms)
+			SetLoadedEditorAssemblies (3ms)
+			RefreshPlugins (0ms)
+			BeforeProcessingInitializeOnLoad (45ms)
+			ProcessInitializeOnLoadAttributes (203ms)
+			ProcessInitializeOnLoadMethodAttributes (18ms)
+			AfterProcessingInitializeOnLoad (1ms)
+			EditorAssembliesLoaded (0ms)
+		ExecutionOrderSort2 (0ms)
+		AwakeInstancesAfterBackupRestoration (6ms)
+Refreshing native plugins compatible for Editor in 1.14 ms, found 3 plugins.
+Preloading 0 native plugins for Editor in 0.00 ms.
+Unloading 4175 Unused Serialized files (Serialized files now loaded: 0)
+Unloading 41 unused Assets / (232.2 KB). Loaded Objects now: 6648.
+Memory consumption went from 0.78 GB to 0.78 GB.
+Total: 2.980333 ms (FindLiveObjects: 0.256583 ms CreateObjectMapping: 0.067458 ms MarkObjects: 2.498042 ms  DeleteObjects: 0.157708 ms)
+
+Prepare: number of updated asset objects reloaded= 0
+AssetImportParameters requested are different than current active one (requested -> active):
+  custom:container-demuxer-ogg: 62fdf1f143b41e24485cea50d1cbac27 -> 
+  custom:video-decoder-ogg-theora: a1e56fd34408186e4bbccfd4996cb3dc -> 
+  custom:CustomObjectIndexerAttribute: 756ad292c208cfabdd7b50bc23989ffe -> 
+  custom:container-demuxer-webm: 4f35f7cbe854078d1ac9338744f61a02 -> 
+  custom:container-muxer-webm: aa71ff27fc2769a1b78a27578f13a17b -> 
+  custom:video-decoder-webm-vp8: 9c59270c3fd7afecdb556c50c9e8de78 -> 
+  custom:SearchIndexIgnoredProperties: e643bd26f0fe6173181afceb89e7c659 -> 
+  custom:AudioImporter_EditorPlatform: 3918e3fc78b5a79bad01e8451be0beb8 -> 
+  custom:framework-osx-AVFoundation: e770b220cccbd017edd2c1fefb359320 -> 
+  custom:video-encoder-webm-vp8: eb34c28f22e8b96e1ab97ce403110664 -> 
+  custom:audio-decoder-ogg-vorbis: bf7c407c2cedff20999df2af8eb42d56 -> 
+  custom:audio-encoder-webm-vorbis: bf7c407c2cedff20999df2af8eb42d56 -> 
+========================================================================
+Received Prepare
+Begin MonoManager ReloadAssembly
+Thread 0x16b92f000 may have been prematurely finalized
+- Loaded All Assemblies, in  0.441 seconds
+Callback registration failed. Increase kMaxCallback.
+Fatal Error! Callback registration failed. Increase kMaxCallback.
+Obtained 31 stack frames.
+#0  0x00000181dc111c in __pthread_kill
+#1  0x5210800181d08a40 in abort
+#2  0x3f238001070e82c4 in __cxx_global_var_init.3
+#3  0x00000105cd8134 in EditorMonoConsole::LogToConsoleImplementation(CppLogEntry&)
+#4  0x00000105cd7800 in EditorMonoConsole::LogToConsoleImplementation(DebugStringToFileData const&)
+#5  0x00000105cd941c in LogToConsoleImplementation(DebugStringToFileData const&)
+#6  0x00000106a350bc in DebugStringToFilePostprocessedStacktrace(DebugStringToFileData const&)
+#7  0x00000106a35654 in DebugStringToFile(DebugStringToFileData const&)
+#8  0x00000105756ef0 in CallbackArrayBase<void (*)(BuildTargetPlatform), void (*)(void const*, BuildTargetPlatform)>::Register(void (*)(BuildTargetPlatform), void (*)(void const*, BuildTargetPlatform), void const*)
+#9  0x000001061e055c in LoadDomainAndUserAssemblies()
+#10 0x000001061e20f4 in LoadUserAssemblies()
+#11 0x000001066a8e38 in AssetImportWorkerClient::ReloadMonoDomain(AssetResolver&)
+#12 0x000001066b4850 in invocation function for block in AssetImportWorkerClient::HandleMessage(PrepareMessage const&)::$_4::operator()() const
+#13 0x00000181c4b910 in _dispatch_client_callout
+#14 0x8a3d000181c5ad9c in _dispatch_async_and_wait_invoke
+#15 0xbc78000181c4b910 in _dispatch_client_callout
+#16 0x9e06800181c59fa8 in _dispatch_main_queue_drain
+#17 0xf054000181c59bc0 in _dispatch_main_queue_callback_4CF
+#18 0xfd6f000181f1715c in __CFRUNLOOP_IS_SERVICING_THE_MAIN_DISPATCH_QUEUE__
+#19 0x3634000181ed4a80 in __CFRunLoopRun
+#20 0xc430000181ed3c5c in CFRunLoopRunSpecific
+#21 0x881800018c44d448 in RunCurrentEventLoopInMode
+#22 0x225600018c44d284 in ReceiveNextEventCommon
+#23 0x144b80018c44cfdc in _BlockUntilNextEventMatchingListInModeWithFilter
+#24 0x352f8001856aec54 in _DPSNextEvent
+#25 0xe36b800185e84ebc in -[NSApplication(NSEventRouting) _nextEventMatchingEventMask:untilDate:inMode:dequeue:]
+#26 0xd80f8001856a2100 in -[NSApplication run]
+#27 0xd75a8001856793cc in NSApplicationMain
+#28 0x3a2280010710d480 in EditorMain(int, char const**)
+#29 0x0000010710d7cc in main
+#30 0x00000181a7d0e0 in start

@@ -8763,3 +8763,142 @@ Received Import Request.
 Start importing Assets/Scenes/MainMenu.unity using Guid(85d1e4dbabee4448c9a7761ba51ebe9d) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: 'bec3da10b67cfbb71485c1924b444708') in 0.014467 seconds
 Number of updated asset objects reloaded before import = 0
 Number of asset objects unloaded after import = 0
+========================================================================
+Received Import Request.
+  Time since last request: 37657.355720 seconds.
+  path: Assets/Animations/Transition
+  artifactKey: Guid(c1da8a21e8cfa49379fdaf373463c7a5) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Animations/Transition using Guid(c1da8a21e8cfa49379fdaf373463c7a5) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '76828cd003a5176d8e3710cfae051de1') in 0.016003 seconds
+Number of updated asset objects reloaded before import = 0
+Number of asset objects unloaded after import = 0
+========================================================================
+Received Import Request.
+  Time since last request: 222.959261 seconds.
+  path: Assets/Animations/Transition/SceneTransition.controller
+  artifactKey: Guid(93702c185e0684513bc881c079db2394) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Animations/Transition/SceneTransition.controller using Guid(93702c185e0684513bc881c079db2394) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: 'd3cc812f3785c37a9ce0ddf8a7f3b3f1') in 0.083255 seconds
+Number of updated asset objects reloaded before import = 0
+Number of asset objects unloaded after import = 1
+========================================================================
+Received Prepare
+Begin MonoManager ReloadAssembly
+Thread 0x16f73b000 may have been prematurely finalized
+- Loaded All Assemblies, in  0.525 seconds
+Refreshing native plugins compatible for Editor in 1.69 ms, found 3 plugins.
+Native extension for WindowsStandalone target not found
+Native extension for OSXStandalone target not found
+Native extension for WebGL target not found
+[Package Manager] Server::EnsureServerProcessIsRunning -- launch failed, reason: Unity was launched with the -noUpm command-line argument
+[Package Manager] UpmClient::Send -- Unable to send message (not connected to UPM process).
+[Package Manager] Cannot connect to Unity Package Manager local server
+Mono: successfully reloaded assembly
+- Finished resetting the current domain, in  0.826 seconds
+Domain Reload Profiling: 1352ms
+	BeginReloadAssembly (220ms)
+		ExecutionOrderSort (0ms)
+		DisableScriptedObjects (10ms)
+		BackupInstance (0ms)
+		ReleaseScriptingObjects (0ms)
+		CreateAndSetChildDomain (94ms)
+	RebuildCommonClasses (36ms)
+	RebuildNativeTypeToScriptingClass (9ms)
+	initialDomainReloadingComplete (17ms)
+	LoadAllAssembliesAndSetupDomain (243ms)
+		LoadAssemblies (309ms)
+		RebuildTransferFunctionScriptingTraits (0ms)
+		AnalyzeDomain (25ms)
+			TypeCache.Refresh (18ms)
+				TypeCache.ScanAssembly (0ms)
+			ScanForSourceGeneratedMonoScriptInfo (0ms)
+			ResolveRequiredComponents (5ms)
+	FinalizeReload (826ms)
+		ReleaseScriptCaches (0ms)
+		RebuildScriptCaches (0ms)
+		SetupLoadedEditorAssemblies (272ms)
+			LogAssemblyErrors (0ms)
+			InitializePlatformSupportModulesInManaged (4ms)
+			SetLoadedEditorAssemblies (3ms)
+			RefreshPlugins (0ms)
+			BeforeProcessingInitializeOnLoad (48ms)
+			ProcessInitializeOnLoadAttributes (197ms)
+			ProcessInitializeOnLoadMethodAttributes (19ms)
+			AfterProcessingInitializeOnLoad (1ms)
+			EditorAssembliesLoaded (0ms)
+		ExecutionOrderSort2 (0ms)
+		AwakeInstancesAfterBackupRestoration (6ms)
+Refreshing native plugins compatible for Editor in 1.14 ms, found 3 plugins.
+Preloading 0 native plugins for Editor in 0.00 ms.
+Unloading 4174 Unused Serialized files (Serialized files now loaded: 0)
+Unloading 41 unused Assets / (232.7 KB). Loaded Objects now: 6687.
+Memory consumption went from 0.78 GB to 0.78 GB.
+Total: 3.526208 ms (FindLiveObjects: 0.279000 ms CreateObjectMapping: 0.072500 ms MarkObjects: 3.024584 ms  DeleteObjects: 0.149333 ms)
+
+Prepare: number of updated asset objects reloaded= 0
+AssetImportParameters requested are different than current active one (requested -> active):
+  custom:container-demuxer-ogg: 62fdf1f143b41e24485cea50d1cbac27 -> 
+  custom:video-decoder-ogg-theora: a1e56fd34408186e4bbccfd4996cb3dc -> 
+  custom:CustomObjectIndexerAttribute: 756ad292c208cfabdd7b50bc23989ffe -> 
+  custom:container-demuxer-webm: 4f35f7cbe854078d1ac9338744f61a02 -> 
+  custom:container-muxer-webm: aa71ff27fc2769a1b78a27578f13a17b -> 
+  custom:video-decoder-webm-vp8: 9c59270c3fd7afecdb556c50c9e8de78 -> 
+  custom:SearchIndexIgnoredProperties: e643bd26f0fe6173181afceb89e7c659 -> 
+  custom:AudioImporter_EditorPlatform: 3918e3fc78b5a79bad01e8451be0beb8 -> 
+  custom:framework-osx-AVFoundation: e770b220cccbd017edd2c1fefb359320 -> 
+  custom:video-encoder-webm-vp8: eb34c28f22e8b96e1ab97ce403110664 -> 
+  custom:audio-decoder-ogg-vorbis: bf7c407c2cedff20999df2af8eb42d56 -> 
+  custom:audio-encoder-webm-vorbis: bf7c407c2cedff20999df2af8eb42d56 -> 
+========================================================================
+Received Import Request.
+  Time since last request: 32.246685 seconds.
+  path: Assets/Animations/Transition/SpinningCube.anim
+  artifactKey: Guid(2a434031bcf1e4b7b8217e60433645a9) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Animations/Transition/SpinningCube.anim using Guid(2a434031bcf1e4b7b8217e60433645a9) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '7c951f6abab85de9c1bd6a993e33a6f4') in 0.046809 seconds
+Number of updated asset objects reloaded before import = 0
+Number of asset objects unloaded after import = 1
+========================================================================
+Received Import Request.
+  Time since last request: 3.220106 seconds.
+  path: Assets/Animations/Transition/SpinningCube.anim
+  artifactKey: Guid(2a434031bcf1e4b7b8217e60433645a9) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Animations/Transition/SpinningCube.anim using Guid(2a434031bcf1e4b7b8217e60433645a9) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: 'ff69b69c0e2c8572cf4698fccfa13a17') in 0.000744 seconds
+Number of updated asset objects reloaded before import = 0
+Number of asset objects unloaded after import = 1
+========================================================================
+Received Prepare
+Begin MonoManager ReloadAssembly
+Thread 0x16f73b000 may have been prematurely finalized
+- Loaded All Assemblies, in  0.444 seconds
+Callback registration failed. Increase kMaxCallback.
+Fatal Error! Callback registration failed. Increase kMaxCallback.
+Obtained 31 stack frames.
+#0  0x00000181dc111c in __pthread_kill
+#1  0xf365800181d08a40 in abort
+#2  0x76e8001032502c4 in __cxx_global_var_init.3
+#3  0x00000101e40134 in EditorMonoConsole::LogToConsoleImplementation(CppLogEntry&)
+#4  0x00000101e3f800 in EditorMonoConsole::LogToConsoleImplementation(DebugStringToFileData const&)
+#5  0x00000101e4141c in LogToConsoleImplementation(DebugStringToFileData const&)
+#6  0x00000102b9d0bc in DebugStringToFilePostprocessedStacktrace(DebugStringToFileData const&)
+#7  0x00000102b9d654 in DebugStringToFile(DebugStringToFileData const&)
+#8  0x000001018beef0 in CallbackArrayBase<void (*)(BuildTargetPlatform), void (*)(void const*, BuildTargetPlatform)>::Register(void (*)(BuildTargetPlatform), void (*)(void const*, BuildTargetPlatform), void const*)
+#9  0x0000010234855c in LoadDomainAndUserAssemblies()
+#10 0x0000010234a0f4 in LoadUserAssemblies()
+#11 0x00000102810e38 in AssetImportWorkerClient::ReloadMonoDomain(AssetResolver&)
+#12 0x0000010281c850 in invocation function for block in AssetImportWorkerClient::HandleMessage(PrepareMessage const&)::$_4::operator()() const
+#13 0x00000181c4b910 in _dispatch_client_callout
+#14 0x1507800181c5ad9c in _dispatch_async_and_wait_invoke
+#15 0xe626800181c4b910 in _dispatch_client_callout
+#16 0x7031000181c59fa8 in _dispatch_main_queue_drain
+#17 0x2422800181c59bc0 in _dispatch_main_queue_callback_4CF
+#18 0xb52d000181f1715c in __CFRUNLOOP_IS_SERVICING_THE_MAIN_DISPATCH_QUEUE__
+#19 0x441d800181ed4a80 in __CFRunLoopRun
+#20 0xd230800181ed3c5c in CFRunLoopRunSpecific
+#21 0xd10880018c44d448 in RunCurrentEventLoopInMode
+#22 0xd15580018c44d284 in ReceiveNextEventCommon
+#23 0x175a00018c44cfdc in _BlockUntilNextEventMatchingListInModeWithFilter
+#24 0x7e420001856aec54 in _DPSNextEvent
+#25 0x7c0e000185e84ebc in -[NSApplication(NSEventRouting) _nextEventMatchingEventMask:untilDate:inMode:dequeue:]
+#26 0x12008001856a2100 in -[NSApplication run]
+#27 0x59618001856793cc in NSApplicationMain
+#28 0x4d2f800103275480 in EditorMain(int, char const**)
+#29 0x000001032757cc in main
+#30 0x00000181a7d0e0 in start

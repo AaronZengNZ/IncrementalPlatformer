@@ -84,24 +84,24 @@ public class UpgradeManager : MonoBehaviour
 
     private void CheckPrefs(){
         if(PlayerPrefs.HasKey("redPad")){
-            redPadActive = Convert.ToBoolean(PlayerPrefs.GetInt("redPadActive"));
+            redPadActive = (PlayerPrefs.GetInt("redPadActive") == 1);
         }
         else{
-            PlayerPrefs.SetInt("redPad", Convert.ToInt32(false));
+            PlayerPrefs.SetInt("redPad", turnToInt(false));
             redPadActive = false;
         }
         if(PlayerPrefs.HasKey("door1")){
-            door1Active = Convert.ToBoolean(PlayerPrefs.GetInt("door1Active"));
+            door1Active = (PlayerPrefs.GetInt("door1Active") == 1);
         }
         else{
-            PlayerPrefs.SetInt("door1", Convert.ToInt32(true));
+            PlayerPrefs.SetInt("door1", turnToInt(true));
             door1Active = true;
         }
         if(PlayerPrefs.HasKey("door2")){
-            door2Active = Convert.ToBoolean(PlayerPrefs.GetInt("door2Active"));
+            door2Active = (PlayerPrefs.GetInt("door2Active") == 1);
         }
         else{
-            PlayerPrefs.SetInt("door2", Convert.ToInt32(true));
+            PlayerPrefs.SetInt("door2", turnToInt(true));
             door2Active = true;
         }
         if(PlayerPrefs.HasKey("playerClones")){
@@ -112,64 +112,64 @@ public class UpgradeManager : MonoBehaviour
             playerClones = 0;
         }
         if(PlayerPrefs.HasKey("greenPad")){
-            greenPadActive = Convert.ToBoolean(PlayerPrefs.GetInt("greenPadActive"));
+            greenPadActive = (PlayerPrefs.GetInt("greenPadActive") == 1);
         }
         else{
-            PlayerPrefs.SetInt("greenPad", Convert.ToInt32(false));
+            PlayerPrefs.SetInt("greenPad", turnToInt(false));
             greenPadActive = false;
         }
         if(PlayerPrefs.HasKey("bluePad")){
-            bluePadActive = Convert.ToBoolean(PlayerPrefs.GetInt("bluePadActive"));
+            bluePadActive = (PlayerPrefs.GetInt("bluePadActive") == 1);
         }
         else{
-            PlayerPrefs.SetInt("bluePad", Convert.ToInt32(false));
+            PlayerPrefs.SetInt("bluePad", turnToInt(false));
             bluePadActive = false;
         }
         if(PlayerPrefs.HasKey("stairsActive")){
-            stairsActive = Convert.ToBoolean(PlayerPrefs.GetInt("stairsActive"));
+            stairsActive = (PlayerPrefs.GetInt("stairsActive") == 1);
         }
         else{
-            PlayerPrefs.SetInt("stairsActive", Convert.ToInt32(false));
+            PlayerPrefs.SetInt("stairsActive", turnToInt(false));
             stairsActive = false;
         }
     }
 
     private void UpdateThisPrefs(){
         if(redPadActive){
-            PlayerPrefs.SetInt("redPadActive", Convert.ToInt32(true));
+            PlayerPrefs.SetInt("redPadActive", turnToInt(true));
         }
         else{
-            PlayerPrefs.SetInt("redPadActive", Convert.ToInt32(false));
+            PlayerPrefs.SetInt("redPadActive", turnToInt(false));
         }
         if(door1Active){
-            PlayerPrefs.SetInt("door1Active", Convert.ToInt32(true));
+            PlayerPrefs.SetInt("door1Active", turnToInt(true));
         }
         else{
-            PlayerPrefs.SetInt("door1Active", Convert.ToInt32(false));
+            PlayerPrefs.SetInt("door1Active", turnToInt(false));
         }
         if(door2Active){
-            PlayerPrefs.SetInt("door2Active", Convert.ToInt32(true));
+            PlayerPrefs.SetInt("door2Active", turnToInt(true));
         }
         else{
-            PlayerPrefs.SetInt("door2Active", Convert.ToInt32(false));
+            PlayerPrefs.SetInt("door2Active", turnToInt(false));
         }
         if(greenPadActive){
-            PlayerPrefs.SetInt("greenPadActive", Convert.ToInt32(true));
+            PlayerPrefs.SetInt("greenPadActive", turnToInt(true));
         }
         else{
-            PlayerPrefs.SetInt("greenPadActive", Convert.ToInt32(false));
+            PlayerPrefs.SetInt("greenPadActive", turnToInt(false));
         }
         if(bluePadActive){
-            PlayerPrefs.SetInt("bluePadActive", Convert.ToInt32(true));
+            PlayerPrefs.SetInt("bluePadActive", turnToInt(true));
         }
         else{
-            PlayerPrefs.SetInt("bluePadActive", Convert.ToInt32(false));
+            PlayerPrefs.SetInt("bluePadActive", turnToInt(false));
         }
         if(stairsActive){
-            PlayerPrefs.SetInt("stairsActive", Convert.ToInt32(true));
+            PlayerPrefs.SetInt("stairsActive", turnToInt(true));
         }
         else{
-            PlayerPrefs.SetInt("stairsActive", Convert.ToInt32(false));
+            PlayerPrefs.SetInt("stairsActive", turnToInt(false));
         }
         PlayerPrefs.SetInt("playerClones", playerClones);
         UnityEngine.Debug.Log("Updated redPad: " + Convert.ToBoolean(PlayerPrefs.GetInt("redPadActive")));
@@ -367,7 +367,7 @@ public class UpgradeManager : MonoBehaviour
         return 0;
     }
 
-    private float turnToInt(bool variable, bool reverse = false){
+    private int turnToInt(bool variable, bool reverse = false){
         if(variable){
             if(reverse){
                 return 0;

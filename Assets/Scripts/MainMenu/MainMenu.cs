@@ -38,6 +38,7 @@ public class MainMenu : MonoBehaviour
         PlayerPrefs.SetFloat("pebbles", 10000000f);
         PlayerPrefs.SetFloat("shards", 50000f);
         PlayerPrefs.SetInt("shardsUnlocked", 1);
+        PlayerPrefs.SetInt("buyable_shardsUnlock", 2);
         StartGame();
     }
 

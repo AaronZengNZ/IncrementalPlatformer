@@ -19,7 +19,7 @@ public class Buyable : MonoBehaviour
     public int level = 1;
     public float[] amounts;
     public string upgradeType = "doubleJumps";
-    public string effectStringPrefix;
+    [TextArea(3,3)] public string effectStringPrefix;
     public string effectStringSuffixPrefix;
     public string differentPrefix = "null";
     public bool showSuffix = true;

@@ -45,6 +45,7 @@ public class Player : MonoBehaviour
     public float currentTrail = 1f;
     public float minimumAltitude = 1f;
     public float chanceToNotUseAutojump = 0f;
+    public float trailsUnlocked = 1f;
     [Header("Auto Jumps")]
     public float maxAutoJumps = 0f;
     public float autoJumpRegenSpeed = 5f;
@@ -63,6 +64,10 @@ public class Player : MonoBehaviour
     public bool tutorialCompleted = false;
     public Transform tutorialSpawn;
     public Transform normalSpawn;
+    public bool canMove = true;
+
+
+    // REFERENCES ARE CUT OFF HERE.
     private bool gravityTripled = false;
     private bool gravityQuintupled = false;
     private bool grounded = false;
@@ -72,6 +77,7 @@ public class Player : MonoBehaviour
     private Vector2 previousVelocity = new Vector2(0, 0);
     private float previousYMagnitude = 0;
     private bool upgrading = false;
+    private float previousTrailsUnlocked = 1f;
 
     void Start()
     {
@@ -86,6 +92,7 @@ public class Player : MonoBehaviour
         else{
             transform.position = tutorialSpawn.position;
         }
+        previousTrailsUnlocked = -1f;
     }
 
     void CheckPrefs(){
@@ -189,9 +196,12 @@ public class Player : MonoBehaviour
     }
     void Update()
     {
+        AutoEquipTrail();
         GroundCollider();
-        Movement();
-        Jumping();
+        if(canMove){
+            Movement();
+            Jumping();
+        }
         AccelerateDown();
         autoJumpCalculations();
         boostCalculations();
@@ -202,7 +212,13 @@ public class Player : MonoBehaviour
         updatePadTimeLeftTexts();
         previousVelocity = rb.velocity;
         previousYMagnitude = Mathf.Abs(rb.velocity.y);
+    }
 
+    private void AutoEquipTrail(){
+        if(trailsUnlocked != previousTrailsUnlocked && trailsUnlocked > 0f){
+            currentTrail = trailsUnlocked - 1f;
+        }
+        previousTrailsUnlocked = trailsUnlocked;
     }
 
     private void updatePadTimeLeftTexts(){

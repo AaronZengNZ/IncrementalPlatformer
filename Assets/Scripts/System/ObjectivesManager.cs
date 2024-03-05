@@ -21,6 +21,7 @@ public class ObjectivesManager : MonoBehaviour
     public NotificationScript notificationScript;
 
     [Header ("References")]
+    public Player playerScript;
     public TextMeshProUGUI objectiveText;
     public Slider objectiveProgressSlider;
     public TextMeshProUGUI objectiveProgressText;
@@ -67,6 +68,7 @@ public class ObjectivesManager : MonoBehaviour
         bigTab.SetActive(showBigTab);
         lerpedObjectiveProgress = Mathf.Lerp(lerpedObjectiveProgress, currentObjectiveProgress, Time.deltaTime * (1f / lerpSpeed));
         objectiveArrowSpriteObj.SetActive(objectiveArrowActivated);
+        playerScript.trailsUnlocked = trailsUnlocked;
         GetObjectiveVariables();
         GetNextObjective();
         PointToObjective();
